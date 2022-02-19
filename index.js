@@ -8,6 +8,7 @@ import LoginComponent from './Login';
 import Bathroom from './bathroom';
 import SleepLog from './sleeplog';
 import Feeding from './Eating';
+import ImportantEntries from './importantEntries';
 
 class App extends Component {
   render() {
@@ -21,6 +22,7 @@ class App extends Component {
           <Route path ="/bathroom" element={<Bathroom />} />
           <Route path ="/eating" element={<Feeding />} />
           <Route path ="/sleeping" element={<SleepLog />} />
+          <Route path ="/important" element={<ImportantEntries />}/>
         </Routes>
       </div>
     </Router>
