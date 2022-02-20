@@ -11,9 +11,42 @@ import {gradeBath} from './review.js';
 import {gradeSleep} from './review.js';
 import {gradeEating} from './review.js';
 import {ChildrenList} from './childrenList.js';
+import Axios from 'axios';
+let total = 34;
+let test1 = 0;
+let test2 = 0;
+
+    Axios.post("http://localhost:5000/get-total", {
+        }).then((response) => {
+        if(response.data.message) {
+            console.log(response.data.message)
+        }
+        else {
+            let length = response.data.length;
+            total = response.data[0].Total
+            test1 = response.data[1].Total
+            test2 = response.data[length-1].Total
+            //console.log(response.data[length-1].Total)
+        }
+        });
+  //console.log(test1)
 
 export class Main extends Component{
+    constructor(){
+        super()
+        this.state = {
+            eatingTotal: total,
+            sleepingTotal: test2,
+            restroomTotal: test1
+        }
+        this.handleUpdate = this.handleUpdate.bind(this);
+    }
     handleClick(e){}
+
+    handleUpdate = () => {
+         //window.location.reload(true);
+         this.forceUpdate();
+    }
 
     handleBath = () => {
         window.open("/bathroom")
@@ -48,7 +81,7 @@ export class Main extends Component{
                             <tr style={{display: "flex"}}>
                                 <div style={{width: "400px"}}>
                                     <h1>Bath Overview</h1>
-                                    <Health color="green" grade={gradeBath()} src={diaper} status={graph}/>
+                                    <Health color="green" grade={gradeBath(test1)} src={diaper} status={graph}/>
                                 </div>
                                 <div>
                                     <h1>Summary</h1>
@@ -58,7 +91,7 @@ export class Main extends Component{
                             <tr style={{display: "flex"}}>
                                 <div style={{width: "400px"}}>
                                     <h1>Sleeping Overview</h1>
-                                    <Health color="green" grade={gradeSleep()} src={sleep} status={graph}/>
+                                    <Health color="green" grade={gradeSleep(test2)} src={sleep} status={graph}/>
                                 </div>
                                 <div>
                                     <h1>Summary</h1>
@@ -68,7 +101,7 @@ export class Main extends Component{
                             <tr style={{display: "flex"}}>
                                 <div style={{width: "400px"}}>
                                     <h1>Eating Overview</h1>
-                                    <Health color="green" grade={gradeEating()} src={bottle} status={graph}/>
+                                    <Health color="green" grade={gradeEating(total)} src={bottle} status={graph}/>
                                 </div>
                                 <div>
                                     <h1>Summary</h1>
@@ -89,6 +122,9 @@ export class Main extends Component{
                         </div>
                         <div style={{display: "stack", marginTop: "30px", marginLeft: "30px"}}>
                                 <button className={MainCSS.add}> + Add Child</button>
+                        </div>
+                        <div style={{display: "stack", marginTop: "30px", marginLeft: "30px"}}>
+                                <button className={MainCSS.summary} onClick={this.handleUpdate}> Update Summary</button>
                         </div>
                         <div style={{marginTop: "100px"}}>
                             <Tips/>
