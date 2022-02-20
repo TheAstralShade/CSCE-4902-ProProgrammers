@@ -126,7 +126,10 @@ class Bathroom extends Component {
           <option value="Sunday">Sunday</option>
         </select>
         </div>
+        
         <div class = "spacer"> </div>
+        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike"></input>
+        <label for="important">Important!!!</label>
         <div class = "spacer"> </div>
         <div class="TypeTest"> 
         <button class="ButtonFormat2" onClick={this.handleClick}>Add Data</button>
