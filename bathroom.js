@@ -51,6 +51,7 @@ class Bathroom extends Component {
       fridayLiquidSet: items[4][2],
       saturdayLiquidSet: items[5][2],
       sundayLiquidSet: items[6][2],
+      totalSet: items[0][1] + items[1][1] + items[2][1] + items[3][1] + items[4][1] + items[5][1] + items[6][1] + items[0][2] + items[1][2] + items[2][2] + items[3][2] + items[4][2] + items[5][2] + items[6][2]
     }).then((response) => {
         console.log(response);
   });
