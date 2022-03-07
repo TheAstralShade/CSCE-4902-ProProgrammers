@@ -1,5 +1,4 @@
 //import './App.css';
-//
 import React, { Component } from "react";
 import  ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -9,7 +8,8 @@ import LoginComponent from './Login';
 import Bathroom from './bathroom';
 import SleepLog from './sleeplog';
 import Feeding from './Eating';
-import ImportantEntries from './importantEntries';
+import ImportantEntries from './importantEntries'
+import Appt from './appointment';
 
 class App extends Component {
   render() {
@@ -23,7 +23,8 @@ class App extends Component {
           <Route path ="/bathroom" element={<Bathroom />} />
           <Route path ="/eating" element={<Feeding />} />
           <Route path ="/sleeping" element={<SleepLog />} />
-          <Route path ="/important" element={<ImportantEntries />}/>
+          <Route path ="/important" element={<ImportantEntries/>} />
+          <Route path ="/appointment" element={<Appt/>} />
         </Routes>
       </div>
     </Router>
