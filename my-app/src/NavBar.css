@@ -1,0 +1,27 @@
+.view{
+    position: fixed;
+    border: solid black;
+    height: 10%;
+    width: 10%;
+    box-sizing: border-box;
+    text-align: center;
+    top: 0;
+}
+h1{
+    height: 10%;
+    bottom: 90%;
+    width: 60%;
+    color:saddlebrown;
+}
+.home{
+    left: 60%;
+}
+.feeding{
+    left: 70%;
+}
+.restroom{
+    left: 80%;
+}
+.sleep{
+    left: 90%;
+}
