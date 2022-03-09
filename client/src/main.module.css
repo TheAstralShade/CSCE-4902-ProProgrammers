@@ -1,0 +1,232 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+row{
+  display: flex;
+}
+
+.title{
+  text-align: center; 
+  background-color: #03dbfc; 
+  color: white; 
+  margin-bottom: 0px; 
+  font-size: 80px;
+}
+
+.nav{
+  height: 50px;
+  width: 140px;
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  margin-right: 150px;
+  background-color: #03dbfc;
+  border-width: 0px;
+  border-style: solid;
+  border-color: white;
+  cursor: pointer;
+}
+
+.nav:hover{
+  border-bottom-width: 10px;
+  transition: .5s;
+}
+
+.logout{
+  height: 40px; 
+  width: 200px; 
+  margin-right: 20px; 
+  background-color: #03dbfc; 
+  font-size:30px; 
+  font-weight: bold;
+  color: white; 
+  margin-top: 5px;
+  border-radius: 7px;
+  border-style: solid;
+  border-color: white;
+  border-width: 0px;
+  cursor: pointer;
+}
+
+button.logout:active{
+  height: 55px;
+  width: 190px;
+  border-color: white;
+  transition: 1s;
+}
+
+button.logout:hover{
+  background-color: white;
+  color: #03dbfc;
+  transition: .5s;
+  cursor: pointer;
+}
+
+.navbar{
+  display: flex;
+  margin: auto;
+  background-color: #03dbfc;
+  margin-bottom: "0px";
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  align-content: center;
+}
+
+.makeapp{
+  height: 50px;
+  width: 200px;
+  font-size: 20px;
+  color: white;
+  background-color: rgb(255, 47, 193);
+  border-width: 0px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button.makeapp:active{
+  border-width: 18px;
+  transition: 1s;
+}
+
+button.makeapp:hover{
+  background-color: purple;
+  transition: .5s;
+}
+
+.tipimage{
+  height: 200px;
+  width: 200px;
+  align-content: center;
+}
+
+.prevtip{
+  height: 30px;
+  width: 80px;
+  margin-right: 80px;
+  border-radius: 10px;
+  color: white;
+  background-color: #03dbfc;
+  border-width: 0px;
+  font-weight: 700;
+}
+.prevtip:hover{background-color: #1e90ff;}
+
+.prevtip:disabled{background-color: grey;}
+
+.prevtip:disabled:hover{background-color: grey;}
+
+.nexttip{
+  height: 30px;
+  width: 80px;
+  border-radius: 10px;
+  color: white;
+  background-color: #03dbfc;
+  border-width: 0px;
+  font-weight: 700;
+}
+
+.nexttip:hover{background-color: #1e90ff;}
+
+.nexttip:disabled{background-color: grey;}
+
+.nexttip:disabled:hover{background-color: grey;}
+
+ul{list-style-type: none;}
+
+.tipon{
+  display: block;
+  margin-left: 100px;
+}
+
+.tipoff{
+  display: none;
+}
+
+.outer_circle{
+  height: 280px;
+  width: 280px;
+  border-radius: 50%;
+  background-color: silver;
+  justify-content: center;
+}
+
+.health_image{
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  top: 100px;
+  left: 90px;
+  background-color: transparent;
+}
+
+.notification{
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  top: 30px;
+  left: 260px;
+}
+
+label{
+  font-size: 15px;
+  color: white;
+}
+
+input{
+  font-size: 15px;
+  height: 30px;
+}
+
+input:focus{
+  outline-color:white;
+}
+
+input.submit:hover{
+  color: black;
+}
+
+select{
+  height: 45px;
+  width: 90px;
+  font-size: 30px;
+  margin-right: 20px;
+  font-weight: 700;
+  border-width: 0px;
+  margin-top: 6px;
+  background-color: #03dbfc;
+  color: white;
+  text-align: center;
+}
+
+.add{
+  height: 40px;
+  width: 180px;
+  font-size: 25px;
+  font-weight: 700;
+  border-radius: 10px;
+  background-color: #03dbfc;
+  color: white;
+  border-width: 0px;
+  margin-top: 0px;
+  margin-left: 70px;
+}
+
+.add:hover{
+  background-color: #1e90ff;
+}
+
+section{
+  background-color: white;
+}
