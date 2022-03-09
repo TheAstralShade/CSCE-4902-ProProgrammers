@@ -3,29 +3,43 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const mysql = require('mysql');
+const bcrypt = require("bcryptjs")
 
 
 app.use(express.json());
 app.use(cors());
-
+let addChild1 = {
+        name: "baby",
+        age: 2,
+        height: "2ft",
+        weight: "120kg"
+    }
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'password123',
+    password: 'Vanguards@10',
     database: 'babytrackerdb',
 });
 
-app.post('/register', (req, res)=> {
+app.post('/register', async (req, res)=> {
 
     const username = req.body.usernameSet;
     const password = req.body.passwordSet;
-
-    db.query("INSERT INTO credentials (username, password) VALUES (?,?)", 
-    [username, password], 
-    (err, result) => {
-        console.log(err);
-    });
-})
+    console.log(username, password)
+    if (username && password) {
+         
+        const salt= await bcrypt.genSalt(10);//Hashed password with bcryptjs
+        const hash =await bcrypt.hash(password, salt)
+    
+        db.query("INSERT INTO credentials (username, password) VALUES (?,?)", 
+        [username, hash], 
+        (err, result) => {
+            console.log(err);
+        });
+    }else{
+       return "No username and password was sent"
+    }
+    }) 
 
 app.post('/get-bathroom', (req, res)=> {
     const baby = req.body.babyName;
@@ -33,41 +47,51 @@ app.post('/get-bathroom', (req, res)=> {
     db.query("SELECT * FROM restroom WHERE Baby = ?",
     [baby],
     (err, result) => {
-        if (result.length > 0) {
-            res.send(result)
-        }
-        else {
-            res.send({message: "No prior log entries!"})
-        }
+        console.log(result, err)
+        // if (result.length > 0) {
+
+        //     res.send(result)
+        // }
+        // else {
+        //     res.send({message: "No prior log entries!"})
+        // }
     });
 })
 
 app.post('/bathroom', (req, res)=> {
-
-    const mondaySValue = req.body.mondaySolidSet;
-    const tuesdaySValue = req.body.tuesdaySolidSet;
-    const wednesdaySValue = req.body.wednesdaySolidSet;
-    const thursdaySValue = req.body.thursdaySolidSet;
-    const fridaySValue = req.body.fridaySolidSet;
-    const saturdaySValue = req.body.saturdaySolidSet;
-    const sundaySValue = req.body.sundaySolidSet;
-    const mondayLValue = req.body.mondayLiquidSet;
-    const tuesdayLValue = req.body.tuesdayLiquidSet;
-    const wednesdayLValue = req.body.wednesdayLiquidSet;
-    const thursdayLValue = req.body.thursdayLiquidSet;
-    const fridayLValue = req.body.fridayLiquidSet;
-    const saturdayLValue = req.body.saturdayLiquidSet;
-    const sundayLValue = req.body.sundayLiquidSet;
-    const impcheck = req.body.imprtnt;
+const {mondaySValue, tuesdaySValue, wednesdaySValue,thursdaySValue,fridaySValue,saturdaySValue,mondayLValue,tuesdayLValue, wednesdayLValue, thursdayLValue, fridayLValue,saturdayLValue, sundayLValue}= req.body
+    // const mondaySValue = req.body.mondaySolidSet;
+    // const tuesdaySValue = req.body.tuesdaySolidSet;
+    // const wednesdaySValue = req.body.wednesdaySolidSet;
+    // const thursdaySValue = req.body.thursdaySolidSet;
+    // const fridaySValue = req.body.fridaySolidSet;
+    // const saturdaySValue = req.body.saturdaySolidSet;
+    // const sundaySValue = req.body.sundaySolidSet;
+    // const mondayLValue = req.body.mondayLiquidSet;
+    // const tuesdayLValue = req.body.tuesdayLiquidSet;
+    // const wednesdayLValue = req.body.wednesdayLiquidSet;
+    // const thursdayLValue = req.body.thursdayLiquidSet;
+    // const fridayLValue = req.body.fridayLiquidSet;
+    // const saturdayLValue = req.body.saturdayLiquidSet;
+    // const sundayLValue = req.body.sundayLiquidSet;
     //console.log(value)
 
-    db.query("UPDATE restroom SET Monday_Solid = ?, Tuesday_Solid = ?, Wednesday_Solid = ?, Thursday_Solid = ?, Friday_Solid = ?, Saturday_Solid = ?, Sunday_Solid = ?, Monday_Liquid = ?, Tuesday_Liquid = ?, Wednesday_Liquid = ?, Thursday_Liquid = ?, Friday_Liquid = ?, Saturday_Liquid = ?, Sunday_Liquid = ?, important = ? WHERE Baby = 'Test'", 
-    [mondaySValue, tuesdaySValue, wednesdaySValue, thursdaySValue, fridaySValue, saturdaySValue, sundaySValue, mondayLValue, tuesdayLValue, wednesdayLValue, thursdayLValue, fridayLValue, saturdayLValue, sundayLValue, impcheck], 
+    db.query("UPDATE restroom SET Monday_Solid = ?, Tuesday_Solid = ?, Wednesday_Solid = ?, Thursday_Solid = ?, Friday_Solid = ?, Saturday_Solid = ?, Sunday_Solid = ?, Monday_Liquid = ?, Tuesday_Liquid = ?, Wednesday_Liquid = ?, Thursday_Liquid = ?, Friday_Liquid = ?, Saturday_Liquid = ?, Sunday_Liquid = ? WHERE Baby = 'Test'", 
+    [mondaySValue, tuesdaySValue, wednesdaySValue, thursdaySValue, fridaySValue, saturdaySValue, sundaySValue, mondayLValue, tuesdayLValue, wednesdayLValue, thursdayLValue, fridayLValue, saturdayLValue, sundayLValue], 
     (err, result) => {
         console.log(err);
     });
 })
 
+
+app.post("/addBaby", (req, res) => {
+    const { name, age, height, weight } = req.body;
+    addChild1 ={name, age, height, weight}
+    console.log(name, age, height, weight)
+}) 
+app.get("/babyDetails", (req, res) => {
+    res.send(addChild1)
+})
 app.post('/eating-bottle', (req, res)=> {
     const date1Value = req.body.date1;
     const date2Value = req.body.date2;
@@ -155,34 +179,27 @@ app.post('/sleeping', (req, res)=> {
         console.log(err);
     });
 })
-app.post('/appointments', (req, res)=> {
-    const date = req.body.dateSet;
-    const time = req.body.timeSet;
-    const doctor = req.body.doctorSet;
-    const location = req.body.locationSet;
 
-    db.query("INSERT INTO appointments (baby, date, time, doctor, location) VALUES ('TKM',? , ?, ?, ?)",
-    [date, time, doctor, location],
-    (err, result) => {
-        console.log(err);
-    });
-})
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    db.query("SELECT * FROM credentials WHERE username = ? AND password = ?", 
-    [username, password], 
-    (err, result) => {
-
-        if (err) {
-            res.send(err);
-        }
-           
-        if (result.length > 0) {
-            res.send(result)
-        }
+    db.query("SELECT * FROM credentials WHERE username = ?", 
+    [username], 
+    async (err, result) => {
+        console.log(result[0].password)
+         const passwordChecker = await bcrypt.compare(password,result[0].password)
+         console.log(passwordChecker)
+        // if (err) {
+        //     res.send(err);
+        // }
+           if(passwordChecker){
+            console.log(result)
+               if (result.length ) {
+                   res.send(username)
+               }
+           }
         else {
             res.send({message: "Wrong username/password combination"})
         }
