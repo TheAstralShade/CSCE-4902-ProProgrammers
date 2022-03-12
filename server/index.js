@@ -206,6 +206,6 @@ app.post('/login', async (req, res) => {
     });
 })
 
-app.listen(6000, () => {
+app.listen(5000, () => {
     console.log('running on port 5000');
 });
