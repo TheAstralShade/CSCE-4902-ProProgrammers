@@ -1,0 +1,11 @@
+app.post('/markedentry', (req, res)=> {
+    const entry = req.body.entrySet;
+    const quantity = req.body.quantitySet;
+    const comment = req.body.commentSet;
+
+    db.query("INSERT INTO appointments (entry, quantity, comment) VALUES (?, ?, ?)",
+    [entry, quantity, comment ],
+    (err, result) => {
+        console.log(err);
+    });
+})
