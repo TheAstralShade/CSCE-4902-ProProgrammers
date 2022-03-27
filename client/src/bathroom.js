@@ -3,7 +3,7 @@ import './bathroom.css';
 import DayComponent from './day';
 import Header from "./component/Header";
 import Axios from 'axios';
-let items=[['Monday',0,0],['Tuesday',0,0],['Wednesday',0,0],['Thursday',0,0],['Friday',0,0],['Saturday',0,0],['Sunday',0,0]];
+let items=[['Monday',0,0,false],['Tuesday',0,0,false],['Wednesday',0,0,false],['Thursday',0,0,false],['Friday',0,0,false],['Saturday',0,0,false],['Sunday',0,0,false]];
 
 class Bathroom extends Component {
   constructor(){
@@ -22,9 +22,9 @@ class Bathroom extends Component {
     //console.log(this.state.dayValue);
 
     items.map((item,index)=>{
-      if (item[0] == this.state.dayValue)
+      if (item[0] === this.state.dayValue)
       {
-        if(this.state.wasteValue=='Solid'){item[1]++}
+        if(this.state.wasteValue==='Solid'){item[1]++}
         else{item[2]++}
         //console.log(item[1])
         //console.log(item[2])
@@ -54,7 +54,20 @@ class Bathroom extends Component {
       totalSet: items[0][1] + items[1][1] + items[2][1] + items[3][1] + items[4][1] + items[5][1] + items[6][1] + items[0][2] + items[1][2] + items[2][2] + items[3][2] + items[4][2] + items[5][2] + items[6][2]
     }).then((response) => {
         console.log(response);
-  });
+    });
+
+    let tmp=[[...items[0]],[...items[1]],[...items[2]],[...items[3]],[...items[4]],[...items[5]],[...items[6]]]
+    for(let i=0; i<7; i++) {
+      if(!tmp[i][3]) {
+        for(let j=0; j<4; j++) {
+          tmp[i][j]=null;
+        }
+      }
+    }
+    Axios.post("http://localhost:5000/importantEntries", tmp)
+    .then((response) => {
+        console.log(response);
+    });
   }
 
   handleClick3 = () => {
@@ -93,31 +106,40 @@ class Bathroom extends Component {
     console.log(e.target.value);
     this.setState({ wasteValue: e.target.value });
   }
+  //finds the given day through a for loop and switches the boolean
+  handleCheckClick(dayName) {
+    for(var i =0; i < 7; i++) {
+      if(items[i][0] === dayName) {
+        items[i][3] ? items[i][3]=false : items[i][3]=true;
+        break;
+      }
+    }
+  }
   render(){
     return ( 
       <div>
         <Header />
-        <div class="centered" > 
-      <div id="LoginBox" class = "LoginCenter">
-        <div class="TitleTest"> Data Entry </div>
-        <hr class="Line"></hr>
-        <div class = "spacer"> </div>
-        <div class = "spacer"> </div>
-        <div class="TypeTest"> Select Waste Type</div>
-        <hr class="Line2"></hr>
-        <div class="TypeTest"> 
-        <select name="dog-names" class="TypeTest" onChange={this.handleChange2}>
+        <div className="centered" > 
+      <div id="LoginBox" className = "LoginCenter">
+        <div className="TitleTest"> Data Entry </div>
+        <hr className="Line"></hr>
+        <div className = "spacer"> </div>
+        <div className = "spacer"> </div>
+        <div className="TypeTest"> Select Waste Type</div>
+        <hr className="Line2"></hr>
+        <div className="TypeTest"> 
+        <select name="dog-names" className="TypeTest" onChange={this.handleChange2}>
           <option value="Solid">Solid</option>
           <option value="Liquid">Liquid</option>
         </select>
         </div>
-        <div class = "spacer"> </div>
-        <div class = "spacer"> </div>
-        <div class = "spacer"> </div>
-        <div class="TypeTest"> Select Day </div>
-        <hr class="Line2"></hr>
-        <div class="TypeTest"> 
-        <select name="dog-names" class="TypeTest" onChange={this.handleChange}>
+        <div className = "spacer"> </div>
+        <div className = "spacer"> </div>
+        <div className = "spacer"> </div>
+        <div className="TypeTest"> Select Day </div>
+        <hr className="Line2"></hr>
+        <div className="TypeTest"> 
+        <select name="dog-names" className="TypeTest" onChange={this.handleChange}>
           <option value="Monday" >Monday</option>
           <option value="Tuesday">Tuesday</option>
           <option value="Wednesday">Wednesday</option>
@@ -127,31 +149,41 @@ class Bathroom extends Component {
           <option value="Sunday">Sunday</option>
         </select>
         </div>
-        <div class = "spacer"> </div>
-        <div class = "spacer"> </div>
-        <div class="TypeTest"> 
-        <button class="ButtonFormat2" onClick={this.handleClick}>Add Data</button>
-        <button class="ButtonFormat2" onClick={this.handleClick2}>Save Data</button>
-        <button class="ButtonFormat2" onClick={this.handleClick3}>Get Data</button>
+        <div className = "spacer"> </div>
+        <div className = "spacer"> </div>
+        <div className="TypeTest">
+        <button className="ButtonFormat2" onClick={this.handleClick}>Add Data</button>
+        <button className="ButtonFormat2" onClick={this.handleClick2}>Save Data</button>
+        <button className="ButtonFormat2" onClick={this.handleClick3}>Get Data</button>
+
         </div> 
       </div>
   
-
-      <div id="LoginBox" class = "LoginCenter">
-        <div class="TitleTest"> Recorded Data </div>
-        <hr class="Line"></hr>
-        <div class = "spacer"> </div>
-        <div class = "spacer"> </div>
+      
+      <div id="LoginBox" className = "LoginCenter">
+        <div className="TitleTest"> Recorded Data </div>
+        <hr className="Line"></hr>
+        <div className = "spacer"> </div>
             {items.map((item,index)=>{
-              return <DayComponent dayValue={item[0]} solidTimes={item[1]} liquidTimes={item[2]}/>
+              return (
+                <div>
+                  <div className = "spacer2"> </div>
+                    <div id="chkBox">
+                      <input type="checkbox" value="false" onClick={() => this.handleCheckClick(item[0])}></input>
+                      <label for="box">Mark Important</label>
+                    </div>
+                    <DayComponent dayValue={item[0]} solidTimes={item[1]} liquidTimes={item[2]}/>
+
+                </div>
+              );
           })}
           
           
-          
+        
         
       </div>
     </div>
-      </div>
+</div>
     
   
     )

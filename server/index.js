@@ -59,7 +59,7 @@ app.post('/get-bathroom', (req, res)=> {
 })
 
 app.post('/bathroom', (req, res)=> {
-const {mondaySValue, tuesdaySValue, wednesdaySValue,thursdaySValue,fridaySValue,saturdaySValue,mondayLValue,tuesdayLValue, wednesdayLValue, thursdayLValue, fridayLValue,saturdayLValue, sundayLValue}= req.body
+    const {mondaySValue, tuesdaySValue, wednesdaySValue,thursdaySValue,fridaySValue,saturdaySValue, sundaySValue,mondayLValue,tuesdayLValue, wednesdayLValue, thursdayLValue, fridayLValue,saturdayLValue, sundayLValue}= req.body
     // const mondaySValue = req.body.mondaySolidSet;
     // const tuesdaySValue = req.body.tuesdaySolidSet;
     // const wednesdaySValue = req.body.wednesdaySolidSet;
@@ -81,6 +81,7 @@ const {mondaySValue, tuesdaySValue, wednesdaySValue,thursdaySValue,fridaySValue,
     (err, result) => {
         console.log(err);
     });
+
 })
 
 
@@ -203,6 +204,26 @@ app.post('/login', async (req, res) => {
         else {
             res.send({message: "Wrong username/password combination"})
         }
+    });
+})
+
+app.post('/importantEntries',(req,res) => {
+    let items=req.body;
+    
+    db.query("INSERT INTO markedentry (entry, quantity, comment) VALUES (?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?)",
+    ["restroom",items[0][1]+items[0][2], items[0][0],
+    "restroom",items[1][1]+items[1][2], items[1][0],
+    "restroom",items[2][1]+items[2][2], items[2][0],
+    "restroom",items[3][1]+items[3][2], items[3][0],
+    "restroom",items[4][1]+items[4][2], items[4][0],
+    "restroom",items[5][1]+items[5][2], items[5][0],
+    "restroom",items[6][1]+items[6][2], items[6][0] ],
+    (err, result) => {
+        console.log(err);
+    });
+
+    db.query("DELETE FROM markedentry WHERE comment IS NULL",(err, result) => {
+        console.log(err);
     });
 })
 

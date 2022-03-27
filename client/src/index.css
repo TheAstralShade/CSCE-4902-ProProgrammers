@@ -87,3 +87,8 @@ code {
   border-bottom-color: rgb(167, 148, 148);
 
 }
+
+#chkBox {
+ color: black;
+ float: left;
+}
