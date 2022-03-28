@@ -169,18 +169,14 @@ class Bathroom extends Component {
                 <div>
                   <div className = "spacer2"> </div>
                     <div id="chkBox">
-                      <input type="checkbox" value="false" onClick={() => this.handleCheckClick(item[0])}></input>
-                      <label for="box">Mark Important</label>
+                      <input id="check" type="checkbox" value="false" onClick={() => this.handleCheckClick(item[0])}></input>
+                      <label for="check">Mark Important</label>
                     </div>
                     <DayComponent dayValue={item[0]} solidTimes={item[1]} liquidTimes={item[2]}/>
 
                 </div>
               );
           })}
-          
-          
-        
-        
       </div>
     </div>
 </div>

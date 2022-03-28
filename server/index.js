@@ -227,6 +227,19 @@ app.post('/importantEntries',(req,res) => {
     });
 })
 
+app.post('/get-importantEntries', (req, res)=> {
+
+    db.query("SELECT * FROM markedentry",
+    (err, result) => {
+        if (result.length > 0) {
+            res.send(result)
+        }
+        else {
+            res.send({message: "No marked entries!"})
+        }
+    });
+})
+
 app.listen(5000, () => {
     console.log('running on port 5000');
 });

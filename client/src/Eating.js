@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-//import {NavBar} from './NavBar.js';
 import Header from "./component/Header";
 import './eating.css';
 import Axios from 'axios';

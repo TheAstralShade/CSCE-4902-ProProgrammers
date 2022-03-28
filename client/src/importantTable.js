@@ -1,9 +1,9 @@
 import React, { useState} from "react";
 import "./ImportantEntries.css";
-import data from "./mock-data.json";
+//import data from "./mock-data.json";
 
-const Table = () => {
-  const [entries, setEntries] = useState(data);
+const Table = ({records}) => {
+  const [entries, setEntries] = useState(records);
   const handleRemoveClick = (entryId)=> {
     const newEntries = [... entries];
     const index = entries.findIndex((entry)=> entry.id === entryId);
