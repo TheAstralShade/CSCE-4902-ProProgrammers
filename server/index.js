@@ -17,7 +17,7 @@ let addChild1 = {
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Vanguards@10',
+    password: 'Password123',
     database: 'babytrackerdb',
 });
 
