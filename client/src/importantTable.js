@@ -1,14 +1,24 @@
 import React, { useState} from "react";
 import "./ImportantEntries.css";
+import Axios from 'axios';
 //import data from "./mock-data.json";
 
 const Table = ({records}) => {
   const [entries, setEntries] = useState(records);
   const handleRemoveClick = (entryId)=> {
+    //update state (this removes row from table)
     const newEntries = [... entries];
     const index = entries.findIndex((entry)=> entry.id === entryId);
     newEntries.splice(index, 1);
     setEntries(newEntries);
+    //remove from database
+    Axios.post("http://localhost:5000/remove-importantEntry", 
+    {
+        id: entryId
+    })
+    .then((response) => {
+        console.log(response);
+    });
   }
   return (
     <div className="app-container">

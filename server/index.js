@@ -240,6 +240,14 @@ app.post('/get-importantEntries', (req, res)=> {
     });
 })
 
+app.post('/remove-importantEntry', (req, res)=> {
+    let entryId = req.body;
+    console.log('This is the entry id: ' + entryId.id);
+    db.query("DELETE FROM markedentry WHERE id=?",[entryId.id],(err,result) => {
+        console.log(err);
+    });
+})
+
 app.listen(5000, () => {
     console.log('running on port 5000');
 });

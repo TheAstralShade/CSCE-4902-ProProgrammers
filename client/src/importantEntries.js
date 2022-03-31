@@ -30,10 +30,13 @@ export default class ImportantEntries extends React.Component {
         return(
             <div className="container">
                 <Header/>
-                {(this.state.viewTable ) ? <Table records={data}/> : ''}
-                <button type="button" onClick={this.handleRefreshClick}>Refresh</button>
+                {(this.state.viewTable ) ? <Table records={data}/> : 
+                <div>
+                    <h1>There are no entries marked as important</h1>
+                    <button type="button" onClick={this.handleRefreshClick}>Check Again</button>
+                </div>}
+                
             </div>
         )
     }
 }
-
