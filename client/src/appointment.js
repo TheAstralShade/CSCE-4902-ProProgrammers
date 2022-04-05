@@ -14,6 +14,30 @@ import {
   } from '@material-ui/pickers';
 import { format } from 'date-fns';
 
+//Table
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 400,
+  },
+});
+function createData(dat, tim, doc, loc) {
+  return { dat, tim, doc, loc };
+}
+
+const rows = [
+  createData( "April 1st 2022", "11:00 am", "Dr. John Doe", "Sunshine Clinic"),
+  createData( "May 22nd 2022", "12:00 pm", "Dr. Jane Smith", "Pediatric Care"),
+  createData( "June, 7 2022", "4:00 pm", "Dr. Jack Ripper", "Ortho Lab"),
+];
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,11 +47,9 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-/*function createData(dat, tim, doc, loc) {
-  return { dat, tim, doc, loc};
-}
-*/
 export default function Appt() {
+
+  const classes = useStyles();
 
   const [data, setData] = useState ({
     doctor:"",
@@ -105,6 +127,28 @@ export default function Appt() {
         </Grid>
         <Grid item xs={6}>
           <Item>Appointments</Item>
+          <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="right">Date</TableCell>
+            <TableCell align="right">Time</TableCell>
+            <TableCell align="right">Doctor</TableCell>
+            <TableCell align="right">Location</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow key={row.name}>
+              <TableCell align="right">{row.dat}</TableCell>
+              <TableCell align="right">{row.tim}</TableCell>
+              <TableCell align="right">{row.doc}</TableCell>
+              <TableCell align="right">{row.loc}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
         </Grid>
       </Grid>
     </Container>
