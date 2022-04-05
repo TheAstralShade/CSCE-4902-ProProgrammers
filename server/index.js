@@ -161,7 +161,7 @@ app.post('/appointments', (req, res)=> {
     const doctor = req.body.doctorSet;
     const location = req.body.locationSet;
 
-    db.query("INSERT INTO appointments (baby, date, time, doctor, location) VALUES ('TKM',? , ?, ?, ?)",
+    db.query("INSERT INTO appointments (baby, date, time, doctor, location) VALUES ('TKM',? , ? , ?, ?)",
     [date, time, doctor, location],
     (err, result) => {
         console.log(err);
