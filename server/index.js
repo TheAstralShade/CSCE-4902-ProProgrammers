@@ -3,43 +3,29 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const mysql = require('mysql');
-const bcrypt = require("bcryptjs")
 
 
 app.use(express.json());
 app.use(cors());
-let addChild1 = {
-        name: "baby",
-        age: 2,
-        height: "2ft",
-        weight: "120kg"
-    }
+
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Vanguards@10',
+    password: 'AstralSays1132000',
     database: 'babytrackerdb',
 });
 
-app.post('/register', async (req, res)=> {
+app.post('/register', (req, res)=> {
 
     const username = req.body.usernameSet;
     const password = req.body.passwordSet;
-    console.log(username, password)
-    if (username && password) {
-         
-        const salt= await bcrypt.genSalt(10);//Hashed password with bcryptjs
-        const hash =await bcrypt.hash(password, salt)
-    
-        db.query("INSERT INTO credentials (username, password) VALUES (?,?)", 
-        [username, hash], 
-        (err, result) => {
-            console.log(err);
-        });
-    }else{
-       return "No username and password was sent"
-    }
-    }) 
+
+    db.query("INSERT INTO credentials (username, password) VALUES (?,?)", 
+    [username, password], 
+    (err, result) => {
+        console.log(err);
+    });
+})
 
 app.post('/get-bathroom', (req, res)=> {
     const baby = req.body.babyName;
@@ -47,51 +33,41 @@ app.post('/get-bathroom', (req, res)=> {
     db.query("SELECT * FROM restroom WHERE Baby = ?",
     [baby],
     (err, result) => {
-        console.log(result, err)
-        // if (result.length > 0) {
-
-        //     res.send(result)
-        // }
-        // else {
-        //     res.send({message: "No prior log entries!"})
-        // }
+        if (result.length > 0) {
+            res.send(result)
+        }
+        else {
+            res.send({message: "No prior log entries!"})
+        }
     });
 })
 
 app.post('/bathroom', (req, res)=> {
-const {mondaySValue, tuesdaySValue, wednesdaySValue,thursdaySValue,fridaySValue,saturdaySValue,mondayLValue,tuesdayLValue, wednesdayLValue, thursdayLValue, fridayLValue,saturdayLValue, sundayLValue}= req.body
-    // const mondaySValue = req.body.mondaySolidSet;
-    // const tuesdaySValue = req.body.tuesdaySolidSet;
-    // const wednesdaySValue = req.body.wednesdaySolidSet;
-    // const thursdaySValue = req.body.thursdaySolidSet;
-    // const fridaySValue = req.body.fridaySolidSet;
-    // const saturdaySValue = req.body.saturdaySolidSet;
-    // const sundaySValue = req.body.sundaySolidSet;
-    // const mondayLValue = req.body.mondayLiquidSet;
-    // const tuesdayLValue = req.body.tuesdayLiquidSet;
-    // const wednesdayLValue = req.body.wednesdayLiquidSet;
-    // const thursdayLValue = req.body.thursdayLiquidSet;
-    // const fridayLValue = req.body.fridayLiquidSet;
-    // const saturdayLValue = req.body.saturdayLiquidSet;
-    // const sundayLValue = req.body.sundayLiquidSet;
+
+    const mondaySValue = req.body.mondaySolidSet;
+    const tuesdaySValue = req.body.tuesdaySolidSet;
+    const wednesdaySValue = req.body.wednesdaySolidSet;
+    const thursdaySValue = req.body.thursdaySolidSet;
+    const fridaySValue = req.body.fridaySolidSet;
+    const saturdaySValue = req.body.saturdaySolidSet;
+    const sundaySValue = req.body.sundaySolidSet;
+    const mondayLValue = req.body.mondayLiquidSet;
+    const tuesdayLValue = req.body.tuesdayLiquidSet;
+    const wednesdayLValue = req.body.wednesdayLiquidSet;
+    const thursdayLValue = req.body.thursdayLiquidSet;
+    const fridayLValue = req.body.fridayLiquidSet;
+    const saturdayLValue = req.body.saturdayLiquidSet;
+    const sundayLValue = req.body.sundayLiquidSet;
+    const totalValue = req.body.totalSet;
     //console.log(value)
 
-    db.query("UPDATE restroom SET Monday_Solid = ?, Tuesday_Solid = ?, Wednesday_Solid = ?, Thursday_Solid = ?, Friday_Solid = ?, Saturday_Solid = ?, Sunday_Solid = ?, Monday_Liquid = ?, Tuesday_Liquid = ?, Wednesday_Liquid = ?, Thursday_Liquid = ?, Friday_Liquid = ?, Saturday_Liquid = ?, Sunday_Liquid = ? WHERE Baby = 'Test'", 
-    [mondaySValue, tuesdaySValue, wednesdaySValue, thursdaySValue, fridaySValue, saturdaySValue, sundaySValue, mondayLValue, tuesdayLValue, wednesdayLValue, thursdayLValue, fridayLValue, saturdayLValue, sundayLValue], 
+    db.query("UPDATE restroom SET Monday_Solid = ?, Tuesday_Solid = ?, Wednesday_Solid = ?, Thursday_Solid = ?, Friday_Solid = ?, Saturday_Solid = ?, Sunday_Solid = ?, Monday_Liquid = ?, Tuesday_Liquid = ?, Wednesday_Liquid = ?, Thursday_Liquid = ?, Friday_Liquid = ?, Saturday_Liquid = ?, Sunday_Liquid = ?, Total = ? WHERE Baby = 'Test'", 
+    [mondaySValue, tuesdaySValue, wednesdaySValue, thursdaySValue, fridaySValue, saturdaySValue, sundaySValue, mondayLValue, tuesdayLValue, wednesdayLValue, thursdayLValue, fridayLValue, saturdayLValue, sundayLValue, totalValue], 
     (err, result) => {
         console.log(err);
     });
 })
 
-
-app.post("/addBaby", (req, res) => {
-    const { name, age, height, weight } = req.body;
-    addChild1 ={name, age, height, weight}
-    console.log(name, age, height, weight)
-}) 
-app.get("/babyDetails", (req, res) => {
-    res.send(addChild1)
-})
 app.post('/eating-bottle', (req, res)=> {
     const date1Value = req.body.date1;
     const date2Value = req.body.date2;
@@ -107,9 +83,10 @@ app.post('/eating-bottle', (req, res)=> {
     const amount5Value = req.body.amount5;
     const amount6Value = req.body.amount6;
     const amount7Value = req.body.amount7;
+    const totalValue = req.body.total;
 
-    db.query("UPDATE eating_bottle SET Date1 = ?, Amount1 = ?, Date2 = ?, Amount2 = ?, Date3 = ?, Amount3 = ?, Date4 = ?, Amount4 = ?, Date5 = ?, Amount5 = ?, Date6 = ?, Amount6 = ?, Date7 = ?, Amount7 = ? WHERE Baby = 'Test'",
-    [date1Value, amount1Value, date2Value, amount2Value, date3Value, amount3Value, date4Value, amount4Value, date5Value, amount5Value, date6Value, amount6Value, date7Value, amount7Value],
+    db.query("UPDATE eating_bottle SET Date1 = ?, Amount1 = ?, Date2 = ?, Amount2 = ?, Date3 = ?, Amount3 = ?, Date4 = ?, Amount4 = ?, Date5 = ?, Amount5 = ?, Date6 = ?, Amount6 = ?, Date7 = ?, Amount7 = ?, Total = ? WHERE Baby = 'Test'",
+    [date1Value, amount1Value, date2Value, amount2Value, date3Value, amount3Value, date4Value, amount4Value, date5Value, amount5Value, date6Value, amount6Value, date7Value, amount7Value, totalValue],
     (err, result)=> {
         console.log(err);
     });
@@ -180,29 +157,138 @@ app.post('/sleeping', (req, res)=> {
     });
 })
 
+app.post('/get-total', (req, res) => {
+    db.query("SELECT Total FROM eating_bottle UNION SELECT Total FROM restroom UNION SELECT Hours FROM sleeping",
+    (err, result) => {
+        if (result.length > 0) {
+            res.send(result)
+        }
+        else {
+            res.send({message: "No prior log entries!"})
+        }
+    });
+})
 
-app.post('/login', async (req, res) => {
+app.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    db.query("SELECT * FROM credentials WHERE username = ?", 
-    [username], 
-    async (err, result) => {
-        console.log(result[0].password)
-         const passwordChecker = await bcrypt.compare(password,result[0].password)
-         console.log(passwordChecker)
-        // if (err) {
-        //     res.send(err);
-        // }
-           if(passwordChecker){
-            console.log(result)
-               if (result.length ) {
-                   res.send(username)
-               }
-           }
+    db.query("SELECT * FROM credentials WHERE username = ? AND password = ?", 
+    [username, password], 
+    (err, result) => {
+
+        if (err) {
+            res.send(err);
+        }
+           
+        if (result.length > 0) {
+            res.send(result)
+        }
         else {
             res.send({message: "Wrong username/password combination"})
         }
+    });
+})
+
+app.post('/importantEntries',(req,res) => {
+    let items=req.body;
+    
+    db.query("INSERT INTO markedentry (entry, quantity, comment) VALUES (?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?)",
+    ["restroom",items[0][1]+items[0][2], items[0][0],
+    "restroom",items[1][1]+items[1][2], items[1][0],
+    "restroom",items[2][1]+items[2][2], items[2][0],
+    "restroom",items[3][1]+items[3][2], items[3][0],
+    "restroom",items[4][1]+items[4][2], items[4][0],
+    "restroom",items[5][1]+items[5][2], items[5][0],
+    "restroom",items[6][1]+items[6][2], items[6][0] ],
+    (err, result) => {
+        console.log(err);
+    });
+
+    db.query("DELETE FROM markedentry WHERE comment IS NULL",(err, result) => {
+        console.log(err);
+    });
+})
+
+app.post('/importantEntriesEating',(req,res) => {
+    const important1 = req.body.temp1;
+    const important2 = req.body.temp2;
+    const important3 = req.body.temp3;
+    const important4 = req.body.temp4;
+    const important5 = req.body.temp5;
+    const important6 = req.body.temp6;
+    const important7 = req.body.temp7;
+    const important8 = req.body.temp8;
+    const important9 = req.body.temp9;
+    const important10 = req.body.temp10;
+    const important11 = req.body.temp11;
+    const important12 = req.body.temp12;
+    const important13 = req.body.temp13;
+    const important14 = req.body.temp14;
+    
+    db.query("INSERT INTO markedentry (entry, quantity, comment) VALUES (?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?)",
+    ["Eating",important8, important1,
+    "Eating",important9, important2,
+    "Eating",important10, important3,
+    "Eating",important11, important4,
+    "Eating",important12, important5,
+    "Eating",important13, important6,
+    "Eating",important14, important7 ],
+    (err, result) => {
+        console.log(err);
+    });
+
+    db.query("DELETE FROM markedentry WHERE comment IS NULL",(err, result) => {
+        console.log(err);
+    });
+})
+
+app.post('/importantEntriesSleeping',(req,res) => {
+    const important1 = req.body.temp1;
+    const important2 = req.body.temp2;
+    
+    db.query("INSERT INTO markedentry (entry, quantity, comment) VALUES (?,?,?)",
+    ["Sleeping",important2, important1 ],
+    (err, result) => {
+        console.log(err);
+    });
+
+    db.query("DELETE FROM markedentry WHERE comment IS NULL",(err, result) => {
+        console.log(err);
+    });
+})
+
+app.post('/get-importantEntries', (req, res)=> {
+
+    db.query("SELECT * FROM markedentry",
+    (err, result) => {
+        if (result.length > 0) {
+            res.send(result)
+        }
+        else {
+            res.send({message: "No marked entries!"})
+        }
+    });
+})
+
+app.post('/remove-importantEntry', (req, res)=> {
+    let entryId = req.body;
+    console.log('This is the entry id: ' + entryId.id);
+    db.query("DELETE FROM markedentry WHERE id=?",[entryId.id],(err,result) => {
+        console.log(err);
+    });
+})
+
+app.post('/appointments', (req, res)=> {
+    const date = req.body.dateSet;
+    const time = req.body.timeSet;
+    const doctor = req.body.doctorSet;
+    const location = req.body.locationSet;
+
+    db.query("INSERT INTO appointments (baby, date, time, doctor, location) VALUES ('TKM',? , ?, ?, ?)",
+    [date, time, doctor, location],
+    (err, result) => {
+        console.log(err);
     });
 })
 
