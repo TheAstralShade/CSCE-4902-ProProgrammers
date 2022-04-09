@@ -4,6 +4,8 @@ import MainCSS from './main.module.css';
 import sleeping from './images/sleeping.png';
 import eating from './images/feedingtip.png';
 import diaper from './images/dirtydiaper.png';
+import bottle from './images/bottle.png';
+import babyfood from './images/babyfood.png';
 
 export class Tips extends Component{
     prevClick = () => {
@@ -28,7 +30,7 @@ export class Tips extends Component{
         var current_element = document.getElementsByClassName(MainCSS.tipon);
         var current_index = current_element[0].value;
         var index = current_index + 1;
-        if(index == 4){
+        if(index == 6){
             document.getElementById('next').disabled = true;
         }else{
             document.getElementById(current_index.toString()).setAttribute("class", MainCSS.tipoff);
@@ -36,7 +38,7 @@ export class Tips extends Component{
             if(document.getElementById('prev').disabled == true){
                 document.getElementById('prev').disabled = false;
             }
-            if((index) == 3){
+            if((index) == 5){
                 document.getElementById('next').disabled = true;
             }
         }
@@ -72,6 +74,20 @@ export class Tips extends Component{
                         <section id="tiptext">
                             Have plenty of diapers ready! <br/>
                             Your baby will need at least <b>10</b> changes a day!
+                        </section>
+                    </li>
+                    <li id="4" value={4} className={MainCSS.tipoff}>
+                        <img id="tip_image" src={bottle} className={MainCSS.tipimage} alt="no image"/>
+                        <section id="tiptext">
+                            Infants should be having breast milk for about 6 months
+                        </section>
+                    </li>
+                    <li id="5" value={5} className={MainCSS.tipoff}>
+                        <img id="tip_image" src={babyfood} className={MainCSS.tipimage} alt="no image"/>
+                        <section id="tiptext">
+                            From 6 months on start introducing baby food to their diet!
+                            Baby food is pureed and strained food that's easier to eat than solids.
+                            They should eat baby food up until a year old. 
                         </section>
                     </li>
                 </ul>

@@ -10,16 +10,18 @@ import sleep from './images/sleep.png';
 import {gradeBath} from './review.js';
 import {gradeSleep} from './review.js';
 import {gradeEating} from './review.js';
-import { ChildrenList } from './childrenList.js';
-import {withRouter} from "react-router-dom"
-import  Modal  from './component/Modal';
+import {summaryBath} from './summary.js';
+import {summarySleep} from './summary.js';
+import {summaryFood} from './summary.js';
+import {ChildrenList} from './childrenList.js';
 import Axios from 'axios';
-let total = 34;
+let total = 0;
+let total2 = 0;     // This is the other total found in the eating table, Chandler
 let test1 = 0;
 let test2 = 0;
+let age = 1;
 
-    Axios.post("http://localhost:5000/get-total",
-     {
+    Axios.post("http://localhost:5000/get-total", {
         }).then((response) => {
         if(response.data.message) {
             console.log(response.data.message)
@@ -27,6 +29,7 @@ let test2 = 0;
         else {
             let length = response.data.length;
             total = response.data[0].Total
+            //total2 = response.data[value].Total
             test1 = response.data[1].Total
             test2 = response.data[length-1].Total
             //console.log(response.data[length-1].Total)
@@ -34,32 +37,16 @@ let test2 = 0;
         });
   //console.log(test1)
 
- class Main extends Component{
+export class Main extends Component{
     constructor(){
         super()
         this.state = {
             eatingTotal: total,
             sleepingTotal: test2,
-            restroomTotal: test1,
-            addChild: {
-                name: "BABY 1",
-                height: "3 ft",
-                age: 5,
-                weight:"20 lbs"
-            },
-            displayModal: false
+            restroomTotal: test1
         }
         this.handleUpdate = this.handleUpdate.bind(this);
-        
-     }
-     
-     async componentDidMount() {
-         const {data:{name, age, height, weight}} = await Axios.get("http://localhost:5000/babyDetails")
-         this.setState({
-             addChild: {
-             name,height,weight, age
-         }})
-     }
+    }
     handleClick(e){}
 
     handleUpdate = () => {
@@ -81,34 +68,12 @@ let test2 = 0;
 
     handleLogout = () => {
         window.open("/")
-     }
-     handleAddChild = (e) => {
-         e.preventDefault()
-         Axios.post("http://localhost:5000/addBaby", 
-         {
-             name: e.target["name"].value,
-             age:e.target["age"].value,
-              height: e.target["height"].value,
-               weight: e.target["weight"].value
-         })
-         this.setState({
-             addChild: {
-                name: e.target["name"].value,
-             age:e.target["age"].value,
-              height: e.target["height"].value,
-               weight: e.target["weight"].value
-         }})
-         this.setState({displayModal: false})
-        //  for (let i = 0; i < e.target; i++){
-        //      console.log(e.target[i].value)
-        //  }
-     }
-    handleModal = () => {
-        this.setState({displayModal: true })
     }
-  handleModalClosure = () => {
-    window.open(`/home`);
-  };
+
+    handleAppt = () => {
+        window.open("/appointment")
+    }
+
     render(){
         return(
             <body style={{marginTop: "0px", width: "100%", backgroundColor: "#03dbfc"}}>
@@ -126,31 +91,31 @@ let test2 = 0;
                             <tr style={{display: "flex"}}>
                                 <div style={{width: "400px"}}>
                                     <h1>Bath Overview</h1>
-                                    <Health color="green" grade={gradeBath(test1)} src={diaper} status={graph}/>
+                                    <Health color="green" grade={gradeBath(test1, age)} src={diaper} status={graph}/>
                                 </div>
                                 <div>
                                     <h1>Summary</h1>
-                                    <p>Text for Summary</p>
+                                    <p>{summaryBath(test1, age)}</p>
                                 </div>
                             </tr>
                             <tr style={{display: "flex"}}>
                                 <div style={{width: "400px"}}>
                                     <h1>Sleeping Overview</h1>
-                                    <Health color="green" grade={gradeSleep(test2)} src={sleep} status={graph}/>
+                                    <Health color="green" grade={gradeSleep(test2, age)} src={sleep} status={graph}/>
                                 </div>
                                 <div>
                                     <h1>Summary</h1>
-                                    <p>Text for Summary</p>
+                                    <p>{summarySleep(test2, age)}</p>
                                 </div>
                             </tr>
                             <tr style={{display: "flex"}}>
                                 <div style={{width: "400px"}}>
                                     <h1>Eating Overview</h1>
-                                    <Health color="green" grade={gradeEating(total)} src={bottle} status={graph}/>
+                                    <Health color="green" grade={gradeEating(total, total2, age)} src={bottle} status={graph}/>
                                 </div>
                                 <div>
                                     <h1>Summary</h1>
-                                    <p>Text for Summary</p>
+                                    <p>{summaryFood(total, total2, age)}</p>
                                 </div>
                             </tr>
                         </table>
@@ -158,22 +123,15 @@ let test2 = 0;
                     <div>
                         <div style={{display: "flex"}}>
                             <div style={{marginLeft: "100px"}}>
-                                <h1 style={{fontSize: "23px"}}>Name: {this.state.addChild.name}</h1>
-                                <h1 style={{fontSize: "23px"}}>Age: {this.state.addChild.age}</h1>
-                                <h1 style={{fontSize: "23px"}}>Height: {this.state.addChild.height}</h1>
-                                <h1 style={{ fontSize: "23px" }}>Weight: {this.state.addChild.weight}</h1>
-                                <button className={MainCSS.makeapp}>Make Appointment</button>
+                                <h1 style={{fontSize: "23px"}}>Name: namevalue</h1>
+                                <h1 style={{fontSize: "23px"}}>Age: agevalue</h1>
+                                <h1 style={{fontSize: "23px"}}>Height: heightvalue</h1>
+                                <h1 style={{fontSize: "23px"}}>Weight: weightvalue</h1>
+                                <button className={MainCSS.makeapp} onClick={this.handleAppt}>Make Appointment</button>
                             </div>
                         </div>
                         <div style={{display: "stack", marginTop: "30px", marginLeft: "30px"}}>
-                            <button className={MainCSS.add} onClick={()=>{this.handleModal()}}>Update Child</button>
-                            
-                            {this.state.displayModal ? <Modal
-                                action={(e) => this.handleAddChild(e)}
-          title="Delete Stream"
-       handleClick={this.handleModalClosure}
-    
-        /> : null}
+                                <button className={MainCSS.add}> + Add Child</button>
                         </div>
                         <div style={{display: "stack", marginTop: "30px", marginLeft: "30px"}}>
                                 <button className={MainCSS.summary} onClick={this.handleUpdate}> Update Summary</button>
@@ -192,6 +150,3 @@ let test2 = 0;
         );
     }
 }
-
-
-export default Main
