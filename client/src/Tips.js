@@ -6,6 +6,7 @@ import eating from './images/feedingtip.png';
 import diaper from './images/dirtydiaper.png';
 import bottle from './images/bottle.png';
 import babyfood from './images/babyfood.png';
+import toughsleep from './images/sleep.png';
 
 export class Tips extends Component{
     prevClick = () => {
@@ -30,7 +31,7 @@ export class Tips extends Component{
         var current_element = document.getElementsByClassName(MainCSS.tipon);
         var current_index = current_element[0].value;
         var index = current_index + 1;
-        if(index == 6){
+        if(index == 7){
             document.getElementById('next').disabled = true;
         }else{
             document.getElementById(current_index.toString()).setAttribute("class", MainCSS.tipoff);
@@ -38,7 +39,7 @@ export class Tips extends Component{
             if(document.getElementById('prev').disabled == true){
                 document.getElementById('prev').disabled = false;
             }
-            if((index) == 5){
+            if((index) == 6){
                 document.getElementById('next').disabled = true;
             }
         }
@@ -88,6 +89,14 @@ export class Tips extends Component{
                             From 6 months on start introducing baby food to their diet!
                             Baby food is pureed and strained food that's easier to eat than solids.
                             They should eat baby food up until a year old. 
+                        </section>
+                    </li>
+                    <li id="6" value={6} className={MainCSS.tipoff}>
+                        <img id="tip_image" src={toughsleep} className={MainCSS.tipimage} alt="no image"/>
+                        <section id="tiptext">
+                            Having trouble putting the baby to sleep? Try rocking the baby.
+                            You can also try a pacifier or white noise like radio static. 
+                            You can also try swaddling them to help them feel comforted.
                         </section>
                     </li>
                 </ul>
