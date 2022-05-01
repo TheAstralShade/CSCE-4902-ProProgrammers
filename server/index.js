@@ -3,10 +3,18 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const mysql = require('mysql');
+const bcrypt = require("bcryptjs");
 
 
 app.use(express.json());
 app.use(cors());
+
+let addChild1 = {
+    name: "baby1",
+    age: 2,
+    height: "2ft",
+    weight: "120kg",
+  };
 
 const db = mysql.createPool({
     host: 'localhost',
@@ -15,17 +23,38 @@ const db = mysql.createPool({
     database: 'babytrackerdb',
 });
 
-app.post('/register', (req, res)=> {
-
+app.post("/register", async (req, res) => {
     const username = req.body.usernameSet;
     const password = req.body.passwordSet;
-
-    db.query("INSERT INTO credentials (username, password) VALUES (?,?)", 
-    [username, password], 
-    (err, result) => {
-        console.log(err);
-    });
-})
+  
+    db.query(
+      "SELECT * FROM credentials WHERE username = ?",
+      [username],
+      (err, result) => {
+        if (result.length > 0) {
+          return res.status(400).send("User with the username already exits");
+        }
+      }
+    );
+    if (!username && !password) {
+      return res.status(400).json({ message: "Come on fill in the damn form" });
+    } else if (username && password) {
+      const salt = await bcrypt.genSalt(10); //Hashed password with bcryptjs
+      const hash = await bcrypt.hash(password, salt);
+  
+      db.query(
+        "INSERT INTO credentials (username, password) VALUES (?,?)",
+        [username, hash],
+        (err, result) => {
+          if (err) {
+            return res.send({ message: "Welcome to thw baby tracker" });
+          }
+        }
+      );
+    } else {
+      return "No username and password was sent";
+    }
+  });
 
 app.post('/get-bathroom', (req, res)=> {
     const baby = req.body.babyName;
@@ -66,7 +95,16 @@ app.post('/bathroom', (req, res)=> {
     (err, result) => {
         console.log(err);
     });
-})
+});
+
+app.post("/addBaby", (req, res) => {
+    const { name, age, height, weight } = req.body;
+    addChild1 = { name, age, height, weight };
+    console.log(name, age, height, weight);
+  });
+  app.get("/babyDetails", (req, res) => {
+    res.send(addChild1);
+  });
 
 app.post('/eating-bottle', (req, res)=> {
     const date1Value = req.body.date1;
@@ -169,26 +207,41 @@ app.post('/get-total', (req, res) => {
     });
 })
 
-app.post('/login', (req, res) => {
+app.post("/login", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-
-    db.query("SELECT * FROM credentials WHERE username = ? AND password = ?", 
-    [username, password], 
-    (err, result) => {
-
-        if (err) {
-            res.send(err);
+    console.log(username);
+  
+    if (username && password) {
+      db.query(
+        "SELECT * FROM credentials WHERE username = ?",
+        [username],
+        async (err, results) => {
+          console.log(err);
+          if (err) {
+            res.status(400).json({ message: "Username can't be found" });
+          } else {
+            const passwordChecker = await bcrypt.compare(
+              password,
+              results[0].password
+            );
+            console.log(passwordChecker);
+            if (passwordChecker) {
+              if (results) {
+                res.send(username);
+              }
+            } else {
+              res
+                .status(400)
+                .send({ message: "Wrong username/password combination" });
+            }
+          }
         }
-           
-        if (result.length > 0) {
-            res.send(result)
-        }
-        else {
-            res.send({message: "Wrong username/password combination"})
-        }
-    });
-})
+      );
+    } else {
+      return res.status(400).send("Come on fill in the damn form");
+    }
+  });
 
 app.post('/importantEntries',(req,res) => {
     let items=req.body;
@@ -246,9 +299,10 @@ app.post('/importantEntriesEating',(req,res) => {
 app.post('/importantEntriesSleeping',(req,res) => {
     const important1 = req.body.temp1;
     const important2 = req.body.temp2;
+    const important3 = req.body.temp3;
     
-    db.query("INSERT INTO markedentry (entry, quantity, comment) VALUES (?,?,?)",
-    ["Sleeping",important2, important1 ],
+    db.query("INSERT INTO markedentry (entry, quantity, day, comment) VALUES (?,?,?,?)",
+    ["Sleeping",important2, important1, important3 ],
     (err, result) => {
         console.log(err);
     });
