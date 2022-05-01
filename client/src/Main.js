@@ -14,6 +14,7 @@ import {summaryBath} from './summary.js';
 import {summarySleep} from './summary.js';
 import {summaryFood} from './summary.js';
 import {ChildrenList} from './childrenList.js';
+import  Modal  from './component/Modal';
 import Axios from 'axios';
 let total = 0;
 let total2 = 0;     // This is the other total found in the eating table, Chandler
@@ -37,15 +38,30 @@ let age = 1;
         });
   //console.log(test1)
 
-export class Main extends Component{
+class Main extends Component{
     constructor(){
         super()
         this.state = {
             eatingTotal: total,
             sleepingTotal: test2,
-            restroomTotal: test1
+            restroomTotal: test1,
+            addChild: {
+                name: "BABY 1",
+                height: "3 ft",
+                age: 5,
+                weight:"20 lbs"
+            },
+            displayModal: false
         }
         this.handleUpdate = this.handleUpdate.bind(this);
+    }
+
+    async componentDidMount() {
+        const {data:{name, age, height, weight}} = await Axios.get("http://localhost:5000/babyDetails")
+        this.setState({
+            addChild: {
+            name,height,weight, age
+        }})
     }
     handleClick(e){}
 
@@ -74,12 +90,38 @@ export class Main extends Component{
         window.open("/appointment")
     }
 
+    handleAddChild = (e) => {
+        e.preventDefault()
+        Axios.post("http://localhost:5000/addBaby", 
+        {
+            name: e.target["name"].value,
+            age:e.target["age"].value,
+             height: e.target["height"].value,
+              weight: e.target["weight"].value
+        })
+        this.setState({
+            addChild: {
+               name: e.target["name"].value,
+            age:e.target["age"].value,
+             height: e.target["height"].value,
+              weight: e.target["weight"].value
+        }})
+        this.setState({displayModal: false})
+       //  for (let i = 0; i < e.target; i++){
+       //      console.log(e.target[i].value)
+       //  }
+    }
+   handleModal = () => {
+       this.setState({displayModal: true })
+   }
+ handleModalClosure = () => {
+   window.open(`/home`);
+ };
     render(){
         return(
             <body style={{marginTop: "0px", width: "100%", backgroundColor: "#03dbfc"}}>
                 <h1 className={MainCSS.title}>BabyTracker</h1>
                 <div className={MainCSS.navbar}>
-                    <ChildrenList/>
                     <button className={MainCSS.nav} style={{marginLeft: "140px"}} onClick={this.handleBath}>Bath</button>
                     <button className={MainCSS.nav} onClick={this.handleSleep}>Sleep</button>
                     <button className={MainCSS.nav} onClick={this.handleEating}>Eating</button>
@@ -123,15 +165,22 @@ export class Main extends Component{
                     <div>
                         <div style={{display: "flex"}}>
                             <div style={{marginLeft: "100px"}}>
-                                <h1 style={{fontSize: "23px"}}>Name: namevalue</h1>
-                                <h1 style={{fontSize: "23px"}}>Age: agevalue</h1>
-                                <h1 style={{fontSize: "23px"}}>Height: heightvalue</h1>
-                                <h1 style={{fontSize: "23px"}}>Weight: weightvalue</h1>
+                                <h1 style={{fontSize: "23px"}}>Name: {this.state.addChild.name}</h1>
+                                <h1 style={{fontSize: "23px"}}>Age: {this.state.addChild.age}</h1>
+                                <h1 style={{fontSize: "23px"}}>Height: {this.state.addChild.height}</h1>
+                                <h1 style={{fontSize: "23px"}}>Weight: {this.state.addChild.weight}</h1>
                                 <button className={MainCSS.makeapp} onClick={this.handleAppt}>Make Appointment</button>
                             </div>
                         </div>
                         <div style={{display: "stack", marginTop: "30px", marginLeft: "30px"}}>
-                                <button className={MainCSS.add}> + Add Child</button>
+                                <button className={MainCSS.add} onClick={()=>{this.handleModal()}}> Update Child</button>
+
+                                {this.state.displayModal ? <Modal
+                                action={(e) => this.handleAddChild(e)}
+          title="Delete Stream"
+       handleClick={this.handleModalClosure}
+    
+        /> : null}
                         </div>
                         <div style={{display: "stack", marginTop: "30px", marginLeft: "30px"}}>
                                 <button className={MainCSS.summary} onClick={this.handleUpdate}> Update Summary</button>
@@ -150,3 +199,5 @@ export class Main extends Component{
         );
     }
 }
+
+export default Main
