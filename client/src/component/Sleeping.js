@@ -29,15 +29,18 @@ const Sleeping = ({ data, setData, options }) => {
 
     let days = data.day
     let hours = data.hoursOfSleep
+    let comment = data.comments
 
     if (!important) {
       days = null
       hours = null
+      comment = null
     }
 
     Axios.post("http://localhost:5000/importantEntriesSleeping", {
       temp1: days,
       temp2: hours,
+      temp3: comment,
     }).then((response) => {
       console.log(response);
     });
