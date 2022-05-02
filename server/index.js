@@ -244,21 +244,22 @@ app.post("/login", async (req, res) => {
   });
 
 app.post('/importantEntries',(req,res) => {
-    let items=req.body;
+    let items=req.body.tmp;
+    let comments=req.body.comments
     
-    db.query("INSERT INTO markedentry (entry, quantity, comment) VALUES (?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?)",
-    ["restroom",items[0][1]+items[0][2], items[0][0],
-    "restroom",items[1][1]+items[1][2], items[1][0],
-    "restroom",items[2][1]+items[2][2], items[2][0],
-    "restroom",items[3][1]+items[3][2], items[3][0],
-    "restroom",items[4][1]+items[4][2], items[4][0],
-    "restroom",items[5][1]+items[5][2], items[5][0],
-    "restroom",items[6][1]+items[6][2], items[6][0] ],
+    db.query("INSERT INTO markedentry (entry, quantity, day, comment) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)",
+    ["Restroom",items[0][1]+items[0][2], items[0][0], comments,
+    "Restroom",items[1][1]+items[1][2], items[1][0], comments,
+    "Restroom",items[2][1]+items[2][2], items[2][0], comments,
+    "Restroom",items[3][1]+items[3][2], items[3][0], comments,
+    "Restroom",items[4][1]+items[4][2], items[4][0], comments,
+    "Restroom",items[5][1]+items[5][2], items[5][0], comments,
+    "Restroom",items[6][1]+items[6][2], items[6][0], comments ],
     (err, result) => {
         console.log(err);
     });
 
-    db.query("DELETE FROM markedentry WHERE comment IS NULL",(err, result) => {
+    db.query("DELETE FROM markedentry WHERE day IS NULL",(err, result) => {
         console.log(err);
     });
 })
@@ -278,20 +279,21 @@ app.post('/importantEntriesEating',(req,res) => {
     const important12 = req.body.temp12;
     const important13 = req.body.temp13;
     const important14 = req.body.temp14;
+    const important15 = req.body.temp15;
     
-    db.query("INSERT INTO markedentry (entry, quantity, comment) VALUES (?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?),(?,?,?)",
-    ["Eating",important8, important1,
-    "Eating",important9, important2,
-    "Eating",important10, important3,
-    "Eating",important11, important4,
-    "Eating",important12, important5,
-    "Eating",important13, important6,
-    "Eating",important14, important7 ],
+    db.query("INSERT INTO markedentry (entry, quantity, day, comment) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)",
+    ["Eating",important8, important1, important15,
+    "Eating",important9, important2, important15,
+    "Eating",important10, important3, important15,
+    "Eating",important11, important4, important15,
+    "Eating",important12, important5, important15,
+    "Eating",important13, important6, important15,
+    "Eating",important14, important7, important15, ],
     (err, result) => {
         console.log(err);
     });
 
-    db.query("DELETE FROM markedentry WHERE comment IS NULL",(err, result) => {
+    db.query("DELETE FROM markedentry WHERE day IS NULL",(err, result) => {
         console.log(err);
     });
 })
