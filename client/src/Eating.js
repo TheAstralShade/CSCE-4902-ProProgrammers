@@ -11,8 +11,10 @@ class Feeding extends Component{
     this.state = {
       ounces: 0,
       minutes: 0,
-      bottleDay: '',
-      breastDay: '',
+      comment: '',
+      comment2: '',
+      bottleDay: 'Monday',
+      breastDay: 'Monday',
       bottleEntry1: ['No Date',0],
       bottleEntry2: ['No Date',0],
       bottleEntry3: ['No Date',0],
@@ -36,6 +38,10 @@ class Feeding extends Component{
     this.handleClick4 = this.handleClick4.bind(this);
     this.handleClick5 = this.handleClick5.bind(this);
     this.handleClick6 = this.handleClick6.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleChange2 = this.handleChange2.bind(this);
+    this.handleComment = this.handleComment.bind(this);
+    this.handleComment2 = this.handleComment2.bind(this);
   }
 
   handleClick(){
@@ -119,9 +125,8 @@ class Feeding extends Component{
   }
 
   handleClick3 = () => {
+    console.log(this.comment)
     Axios.post("http://localhost:5000/eating-bottle", {
-      // Work the server responses Chandler. 
-      // Use the this.state.bottleEntry states
       date1: this.state.bottleEntry1[0],
       date2: this.state.bottleEntry2[0],
       date3: this.state.bottleEntry3[0],
@@ -199,7 +204,8 @@ class Feeding extends Component{
       temp11: bottletemp11,
       temp12: bottletemp12,
       temp13: bottletemp13,
-      temp14: bottletemp14
+      temp14: bottletemp14,
+      temp15: this.state.comment
     }).then((response) => {
         console.log(response);
     });
@@ -311,7 +317,8 @@ class Feeding extends Component{
     temp11: foodtemp11,
     temp12: foodtemp12,
     temp13: foodtemp13,
-    temp14: foodtemp14
+    temp14: foodtemp14,
+    temp15: this.state.comment2
   }).then((response) => {
       console.log(response);
   });
@@ -352,13 +359,27 @@ class Feeding extends Component{
   handleMinutesChange = (e) => {
     this.setState({ minutes: e.target.value})
   }
-  
-  handleBottleDayChange = (e) => {
-    this.setState({ bottleDay: e.target.value})
-  }
 
   handleBreastDayChange = (e) => {
     this.setState({ breastDay: e.target.value})
+  }
+
+  handleChange(e) {
+    this.setState({ bottleDay: e.target.value });
+  }
+
+  handleChange2(e) {
+    this.setState({ breastDay: e.target.value });
+  }
+
+  handleComment(e) {
+    console.log(e.target.value)
+    this.setState({ comment: e.target.value });
+  }
+
+  handleComment2(e) {
+    console.log(e.target.value)
+    this.setState({ comment2: e.target.value });
   }
 
   handleCheckClick1(value) {
@@ -395,13 +416,24 @@ class Feeding extends Component{
             />
             <br></br>
             <br></br>
-            <label>Day:</label>
+            <label>Comment:</label>
             <input 
               type="text" 
-              name="day"
-              value={this.state.bottleDay} 
-              onChange={this.handleBottleDayChange}
+              name="comment"
+              value={this.state.comment} 
+              onChange={this.handleComment}
             />
+            <br></br>
+            <br></br>
+            <select name="dog-names" onChange={this.handleChange}>
+              <option value="Monday" >Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
             <br></br>
             <br></br>
             <button onClick={this.handleClick}>Record</button>
@@ -448,24 +480,35 @@ class Feeding extends Component{
           </h3>
         </div>
         <div className="Breastfeed Box">
-          <h2>Breastfeeding Entry</h2>
+          <h2>Normal Food Entries</h2>
           <div className="inputs">
-            <label>Minutes: </label>
+            <label>Ounces: </label>
             <input 
               type="number" 
-              name="minutes"
+              name="ounces"
               value={this.state.minutes}
               onChange={this.handleMinutesChange}
             />
             <br></br>
             <br></br>
-            <label>Day:</label>
+            <label>Comment:</label>
             <input 
               type="text" 
-              name="day"
-              value={this.state.breastDay} 
-              onChange={this.handleBreastDayChange}
+              name="comment"
+              value={this.state.comment2} 
+              onChange={this.handleComment2}
             />
+            <br></br>
+            <br></br>
+            <select name="dog-names" onChange={this.handleChange2}>
+              <option value="Monday" >Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
             <br></br>
             <br></br>
             <button onClick={this.handleClick2}>Record</button>

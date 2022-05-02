@@ -20,7 +20,7 @@ let total = 0;
 let total2 = 0;     // This is the other total found in the eating table, Chandler
 let test1 = 0;
 let test2 = 0;
-let age = 1;
+//let age = 1;
 
     Axios.post("http://localhost:5000/get-total", {
         }).then((response) => {
@@ -133,31 +133,31 @@ class Main extends Component{
                             <tr style={{display: "flex"}}>
                                 <div style={{width: "400px"}}>
                                     <h1>Bath Overview</h1>
-                                    <Health color="green" grade={gradeBath(test1, age)} src={diaper} status={graph}/>
+                                    <Health color="green" grade={gradeBath(test1, this.state.addChild.age)} src={diaper} status={graph}/>
                                 </div>
                                 <div>
                                     <h1>Summary</h1>
-                                    <p>{summaryBath(test1, age)}</p>
+                                    <p>{summaryBath(test1, this.state.addChild.age)}</p>
                                 </div>
                             </tr>
                             <tr style={{display: "flex"}}>
                                 <div style={{width: "400px"}}>
                                     <h1>Sleeping Overview</h1>
-                                    <Health color="green" grade={gradeSleep(test2, age)} src={sleep} status={graph}/>
+                                    <Health color="green" grade={gradeSleep(test2, this.state.addChild.age)} src={sleep} status={graph}/>
                                 </div>
                                 <div>
                                     <h1>Summary</h1>
-                                    <p>{summarySleep(test2, age)}</p>
+                                    <p>{summarySleep(test2, this.state.addChild.age)}</p>
                                 </div>
                             </tr>
                             <tr style={{display: "flex"}}>
                                 <div style={{width: "400px"}}>
                                     <h1>Eating Overview</h1>
-                                    <Health color="green" grade={gradeEating(total, total2, age)} src={bottle} status={graph}/>
+                                    <Health color="green" grade={gradeEating(total, total2, this.state.addChild.age)} src={bottle} status={graph}/>
                                 </div>
                                 <div>
                                     <h1>Summary</h1>
-                                    <p>{summaryFood(total, total2, age)}</p>
+                                    <p>{summaryFood(total, total2, this.state.addChild.age)}</p>
                                 </div>
                             </tr>
                         </table>
