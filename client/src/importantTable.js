@@ -1,7 +1,6 @@
 import React, { useState} from "react";
 import "./ImportantEntries.css";
 import Axios from 'axios';
-//import data from "./mock-data.json";
 
 const Table = ({records}) => {
   const [entries, setEntries] = useState(records);
@@ -27,6 +26,7 @@ const Table = ({records}) => {
           <tr>
             <th>Entry</th>
             <th>Quantity</th>
+            <th>Day</th>
             <th>Comment</th>
             <th>Actions</th>
           </tr>
@@ -36,6 +36,7 @@ const Table = ({records}) => {
             <tr key={entry.id}>
               <td>{entry.entry}</td>
               <td>{entry.quantity}</td>
+              <td>{entry.day}</td>
               <td>{entry.comment}</td>
               <td>
                 <button type="button" onClick={()=> handleRemoveClick(entry.id)}>

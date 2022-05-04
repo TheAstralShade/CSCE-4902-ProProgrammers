@@ -11,11 +11,13 @@ class Bathroom extends Component {
     this.state = {
       dayValue : 'Monday',
       wasteValue:'Solid',
+      comment: '',
       updateValue:false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleChange2=this.handleChange2.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleComment = this.handleComment.bind(this);
   }
   handleClick = () => {
     //console.log(this.state.wasteValue);
@@ -64,7 +66,10 @@ class Bathroom extends Component {
         }
       }
     }
-    Axios.post("http://localhost:5000/importantEntries", tmp)
+    Axios.post("http://localhost:5000/importantEntries", {
+      tmp,
+      comments: this.state.comment
+    })
     .then((response) => {
         console.log(response);
     });
@@ -111,10 +116,16 @@ class Bathroom extends Component {
     for(var i =0; i < 7; i++) {
       if(items[i][0] === dayName) {
         items[i][3] ? items[i][3]=false : items[i][3]=true;
+        console.log(items[i][3])
         break;
       }
     }
   }
+
+  handleComment(e) {
+    this.setState({ comment: e.target.value });
+  }
+
   render(){
     return ( 
       <div>
@@ -135,7 +146,6 @@ class Bathroom extends Component {
         </div>
         <div className = "spacer"> </div>
         <div className = "spacer"> </div>
-        <div className = "spacer"> </div>
         <div className="TypeTest"> Select Day </div>
         <hr className="Line2"></hr>
         <div className="TypeTest"> 
@@ -149,6 +159,15 @@ class Bathroom extends Component {
           <option value="Sunday">Sunday</option>
         </select>
         </div>
+        <div className = "spacer"> </div>
+        <div className = "spacer"> </div>
+        <div className="TypeTest">Comment</div>
+        <hr className="Line2"></hr>
+        <input 
+          className="CommentTest"
+          value={this.state.comment}
+          onChange={this.handleComment}
+          />
         <div className = "spacer"> </div>
         <div className = "spacer"> </div>
         <div className="TypeTest">

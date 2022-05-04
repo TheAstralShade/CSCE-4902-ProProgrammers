@@ -1,5 +1,6 @@
 import React from "react";
 import Axios from 'axios';
+let important = false
 const Sleeping = ({ data, setData, options }) => {
   //Keeping data
 
@@ -14,7 +15,7 @@ const Sleeping = ({ data, setData, options }) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const onClick = (e) => {
+  const handleClick = (e) => {
     e.preventDefault();
     console.log(data);
 
@@ -25,6 +26,31 @@ const Sleeping = ({ data, setData, options }) => {
     }).then((response) => {
       console.log(response);
     });
+
+    let days = data.day
+    let hours = data.hoursOfSleep
+    let comment = data.comments
+
+    if (!important) {
+      days = null
+      hours = null
+      comment = null
+    }
+
+    Axios.post("http://localhost:5000/importantEntriesSleeping", {
+      temp1: days,
+      temp2: hours,
+      temp3: comment,
+    }).then((response) => {
+      console.log(response);
+    });
+
+  };
+
+  const handleCheckClick = (e) => {
+    e.preventDefault();
+    important ? important=false : important=true;
+    console.log(important);
   };
 
   return (
@@ -98,9 +124,11 @@ const Sleeping = ({ data, setData, options }) => {
             />
           </div>
         </div>
-        <button className="positive ui button" onClick={onClick}>
+        <button className="positive ui button" onClick={handleClick}>
           Submit
         </button>
+        <input id="check" type="checkbox" value="false" onClick={handleCheckClick}></input>
+        <label for="check">Mark Important</label>
       </form>
     </div>
   );

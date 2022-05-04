@@ -1,5 +1,4 @@
 import React from "react";
-//import './ImportantEntries.css';
 import Header from "./component/Header";
 import Table from "./importantTable";
 import Axios from 'axios';
