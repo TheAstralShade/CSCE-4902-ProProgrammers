@@ -12,8 +12,8 @@ import { AddChild } from "./addchild";
 import { toast } from "react-toastify";
 import Axios from "axios";
 import LoginComponent from "./Login";
-import Bathroom from "./bathroom";
 import SleepLog from "./sleeplog";
+import BathroomLog from "./bathroomLog";
 import Feeding from "./Eating";
 import ImportantEntries from "./importantEntries";
 import Appt from './appointment';
@@ -114,7 +114,7 @@ function App() {
             path="/bathroom"
             element={
               <ProctedRoute isSignedIn={isSignedIn}>
-                <Bathroom />
+                <BathroomLog />
               </ProctedRoute>
             }
           />
