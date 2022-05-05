@@ -1,12 +1,3 @@
-div.threeButons {
-  margin: auto;
-}
-button.positive.ui.button{
-  width: 15%;
-  float: left;
-  margin: auto;
-}
-select.ui.search.dropdown {
-  margin: auto;
-  width: 50%;
+#chkBox{
+  float: right;
 }

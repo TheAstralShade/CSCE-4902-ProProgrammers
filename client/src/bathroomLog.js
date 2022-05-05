@@ -2,6 +2,8 @@ import React, {Component } from "react";
 import Header from "./component/Header";
 import {Progress, Button, Checkbox} from 'semantic-ui-react';
 import Axios from 'axios';
+import './bathroomLog.css'
+
 
 const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 const types= ["Solid","Liquid"];
@@ -178,13 +180,11 @@ class bathroomLog extends Component {
             <div className="column" >
               {items.map((item, index) => {
                 return (
-                  <div>
-                    <Checkbox label={<label>Mark {item[0]} as important</label>} onClick={() => this.handleCheckClick(item[0])}></Checkbox>
-                    <br></br>
-                    Solid Entries: {item[1]}
-                    <Progress color='green' percent={5*item[1]}></Progress>
-                    Liquid Entries: {item[2]}
-                    <Progress color='green' percent={5*item[2]}></Progress>
+                  <div sytle>
+                      {item[0]}
+                      <Checkbox style={{paddingLeft: 50}} id="chkBox" label={<label>Mark  as important</label>} onClick={() => this.handleCheckClick(item[0])}></Checkbox>
+                    <Progress color='green' percent={5*item[1]}>Solid Entries: {item[1]}</Progress>
+                    <Progress color='green' percent={5*item[2]}>Liquid Entries: {item[2]}</Progress>
                   </div>
                 );
               })}
