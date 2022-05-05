@@ -1,8 +1,7 @@
-import React, { useState, useEffect, Component } from "react";
+import React, {Component } from "react";
 import Header from "./component/Header";
-import {Progress, Button, Checkbox} from'semantic-ui-react';
+import {Progress, Button, Checkbox} from 'semantic-ui-react';
 import Axios from 'axios';
-import './bathroomLog.css'
 
 const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 const types= ["Solid","Liquid"];
@@ -166,9 +165,12 @@ class bathroomLog extends Component {
                     <input type="text" name="comments" value={this.state.comment} onChange={this.handleComment}/>
                   </div>
                 </div>
-                <Button className="positive ui button" onClick={this.handleAddDataClick}>Add Data</Button>
-                <Button className="positive ui button" onClick={this.handleSaveClick}>Save Data</Button>
-                <Button className="positive ui button" onClick={this.handleGetClick}>Get Data</Button>
+                <br></br>
+                <div className="row">
+                  <Button className="positive ui button" onClick={this.handleAddDataClick}>Add Data</Button>
+                  <Button className="positive ui button" onClick={this.handleSaveClick}>Save Data</Button>
+                  <Button className="positive ui button" onClick={this.handleGetClick}>Get Data</Button>
+                </div>
               </form>
             </div>
 
