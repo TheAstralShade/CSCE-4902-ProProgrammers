@@ -1,5 +1,6 @@
 import React from "react";
 import Axios from 'axios';
+import {Checkbox} from 'semantic-ui-react';
 let important = false
 const Sleeping = ({ data, setData, options }) => {
   //Keeping data
@@ -98,21 +99,7 @@ const Sleeping = ({ data, setData, options }) => {
             {parseFloat(data.hoursOfSleep)}
           </span>
         </div>
-        {/* </div> */}
-        {/* <div className="field">
-          <label> Time of Sleep</label>
-          <div className="ui input">
-            <input
-              type="time"
-              step="1"
-              value={`${parse(data.sleepTime.hr)}:${parse(
-                data.sleepTime.mm
-              )}:${parse(data.sleepTime.ss)}`}
-              name="sleepTime"
-              onChange={onChange}
-            />
-          </div>
-        </div> */}
+
         <div className="field">
           <label> Enter Comments</label>
           <div className="ui input">
@@ -124,11 +111,13 @@ const Sleeping = ({ data, setData, options }) => {
             />
           </div>
         </div>
+        <div className="field">
+          <Checkbox style={{"left":"0%"}} value="false" onClick={handleCheckClick} label={<label>Mark Important</label>}></Checkbox>
+        </div>
         <button className="positive ui button" onClick={handleClick}>
           Submit
         </button>
-        <input id="check" type="checkbox" value="false" onClick={handleCheckClick}></input>
-        <label for="check">Mark Important</label>
+
       </form>
     </div>
   );
