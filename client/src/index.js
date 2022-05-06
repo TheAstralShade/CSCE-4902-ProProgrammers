@@ -14,7 +14,7 @@ import Axios from "axios";
 import LoginComponent from "./Login";
 import SleepLog from "./sleeplog";
 import BathroomLog from "./bathroomLog";
-import Feeding from "./Eating";
+import FeedLog from "./feedLog";
 import ImportantEntries from "./importantEntries";
 import Appt from './appointment';
 import ProctedRoute from "./component/ProtectedRoute";
@@ -122,7 +122,7 @@ function App() {
             path="/eating"
             element={
               <ProctedRoute isSignedIn={isSignedIn}>
-                <Feeding />
+                <FeedLog />
               </ProctedRoute>
             }
           />

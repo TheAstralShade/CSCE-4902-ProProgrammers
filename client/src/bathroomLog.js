@@ -2,7 +2,6 @@ import React, {Component } from "react";
 import Header from "./component/Header";
 import {Progress, Button, Checkbox} from 'semantic-ui-react';
 import Axios from 'axios';
-import './bathroomLog.css'
 
 
 const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
