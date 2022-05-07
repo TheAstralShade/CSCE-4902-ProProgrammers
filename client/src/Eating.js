@@ -4,6 +4,8 @@ import './eating.css';
 import Axios from 'axios';
 let importantbottle = [false, false, false, false, false, false, false]
 let importantbreast = [false, false, false, false, false, false, false]
+let bottleTotal = 0;
+let breastTotal = 0;
  
 class Feeding extends Component{
   constructor(){
@@ -30,7 +32,7 @@ class Feeding extends Component{
       breastEntry6: ['No Date',0],
       breastEntry7: ['No Date',0],
       bottleMarker: 0,
-      breastMarker: 0,
+      breastMarker: 0
     }
     this.handleClick = this.handleClick.bind(this);
     this.handleClick2 = this.handleClick2.bind(this);
@@ -51,30 +53,37 @@ class Feeding extends Component{
       case 0:
         this.state.bottleEntry1[0] = this.state.bottleDay
         this.state.bottleEntry1[1]= this.state.ounces
+        bottleTotal += parseInt(this.state.ounces)
       break;
       case 1:
         this.state.bottleEntry2[0] = this.state.bottleDay
         this.state.bottleEntry2[1]= this.state.ounces
+        bottleTotal += parseInt(this.state.ounces)
       break;
       case 2:
         this.state.bottleEntry3[0] = this.state.bottleDay
         this.state.bottleEntry3[1]= this.state.ounces
+        bottleTotal += parseInt(this.state.ounces)
       break;
       case 3:
         this.state.bottleEntry4[0] = this.state.bottleDay
         this.state.bottleEntry4[1]= this.state.ounces
+        bottleTotal += parseInt(this.state.ounces)
       break;
       case 4:
         this.state.bottleEntry5[0] = this.state.bottleDay
         this.state.bottleEntry5[1]= this.state.ounces
+        bottleTotal += parseInt(this.state.ounces)
       break;
       case 5:
         this.state.bottleEntry6[0] = this.state.bottleDay
         this.state.bottleEntry6[1]= this.state.ounces
+        bottleTotal += parseInt(this.state.ounces)
       break;
       case 6:
         this.state.bottleEntry7[0] = this.state.bottleDay
         this.state.bottleEntry7[1]= this.state.ounces
+        bottleTotal += parseInt(this.state.ounces)
       break;
     }
 
@@ -82,6 +91,8 @@ class Feeding extends Component{
       this.state.bottleMarker = 0
     else
       this.state.bottleMarker++
+    
+      //console.log(bottleTotal);
   }
 
   handleClick2(){
@@ -91,30 +102,37 @@ class Feeding extends Component{
       case 0:
         this.state.breastEntry1[0] = this.state.breastDay
         this.state.breastEntry1[1]= this.state.minutes
+        breastTotal += parseInt(this.state.minutes)
       break;
       case 1:
         this.state.breastEntry2[0] = this.state.breastDay
         this.state.breastEntry2[1]= this.state.minutes
+        breastTotal += parseInt(this.state.minutes)
       break;
       case 2:
         this.state.breastEntry3[0] = this.state.breastDay
         this.state.breastEntry3[1]= this.state.minutes
+        breastTotal += parseInt(this.state.minutes)
       break;
       case 3:
         this.state.breastEntry4[0] = this.state.breastDay
         this.state.breastEntry4[1]= this.state.minutes
+        breastTotal += parseInt(this.state.minutes)
       break;
       case 4:
         this.state.breastEntry5[0] = this.state.breastDay
         this.state.breastEntry5[1]= this.state.minutes
+        breastTotal += parseInt(this.state.minutes)
       break;
       case 5:
         this.state.breastEntry6[0] = this.state.breastDay
         this.state.breastEntry6[1]= this.state.minutes
+        breastTotal += parseInt(this.state.minutes)
       break;
       case 6:
         this.state.breastEntry7[0] = this.state.breastDay
         this.state.breastEntry7[1]= this.state.minutes
+        breastTotal += parseInt(this.state.minutes)
       break;
     }
 
@@ -125,7 +143,8 @@ class Feeding extends Component{
   }
 
   handleClick3 = () => {
-    console.log(this.comment)
+    //let username = getUser();
+    //console.log(this.comment)
     Axios.post("http://localhost:5000/eating-bottle", {
       date1: this.state.bottleEntry1[0],
       date2: this.state.bottleEntry2[0],
@@ -141,7 +160,8 @@ class Feeding extends Component{
       amount5: this.state.bottleEntry5[1],
       amount6: this.state.bottleEntry6[1],
       amount7: this.state.bottleEntry7[1],
-      total: this.state.bottleEntry1[1] + this.state.bottleEntry2[1] + this.state.bottleEntry3[1] + this.state.bottleEntry4[1] + this.state.bottleEntry5[1] + this.state.bottleEntry6[1] + this.state.bottleEntry7[1]
+      total: bottleTotal,
+      user: localStorage.getItem("username")
     }).then((response) => {
         console.log(response);
     });
@@ -205,7 +225,8 @@ class Feeding extends Component{
       temp12: bottletemp12,
       temp13: bottletemp13,
       temp14: bottletemp14,
-      temp15: this.state.comment
+      temp15: this.state.comment,
+      user: localStorage.getItem("username")
     }).then((response) => {
         console.log(response);
     });
@@ -213,8 +234,9 @@ class Feeding extends Component{
   }
 
   handleClick4 = () => {
+    //let username = getUser();
     Axios.post("http://localhost:5000/get-eating-bottle", {
-      babyName: 'Test'
+      user: localStorage.getItem("uername")
     }).then((response) => {
       if(response.data.message) {
         console.log(response.data.message)
@@ -240,6 +262,7 @@ class Feeding extends Component{
 }
 
   handleClick5 = () => {
+    //let username = getUser();
     Axios.post("http://localhost:5000/eating-breast", {
       date1: this.state.breastEntry1[0],
       date2: this.state.breastEntry2[0],
@@ -255,6 +278,8 @@ class Feeding extends Component{
       time5: this.state.breastEntry5[1],
       time6: this.state.breastEntry6[1],
       time7: this.state.breastEntry7[1],
+      total: breastTotal,
+      user: localStorage.getItem("username")
     }).then((response) => {
         console.log(response);
   });
@@ -318,7 +343,8 @@ class Feeding extends Component{
     temp12: foodtemp12,
     temp13: foodtemp13,
     temp14: foodtemp14,
-    temp15: this.state.comment2
+    temp15: this.state.comment2,
+    user: localStorage.getItem("username")
   }).then((response) => {
       console.log(response);
   });
@@ -327,8 +353,9 @@ class Feeding extends Component{
 }
 
   handleClick6 = () => {
+    //let username = getUser();
     Axios.post("http://localhost:5000/get-eating-breast", {
-      babyName: 'Test'
+      user: localStorage.getItem("username")
     }).then((response) => {
       if(response.data.message) {
         console.log(response.data.message)

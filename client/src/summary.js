@@ -159,37 +159,37 @@ export function summaryFood(total, total2, age){
     switch(true) {
         case age == 0:
             average = 42;  // Ounces of formula, use the total from breastfeeding
-            foodType = total2;
+            foodType = total;
             break;
         case age == 1:
             average = 14;   // Meals weekly, use normal total
-            foodType = total;
+            foodType = total2;
             adjustor = 7;
             break;
         case age == 2:
             average = 21;   
-            foodType = total;
+            foodType = total2;
             adjustor = 0;
             break;
         case age == 3:
             average = 21;
-            foodType = total;
+            foodType = total2;
             adjustor = 0;
             break;
         case age == 4:
             average = 21;
-            foodType = total;
+            foodType = total2;
             adjustor = 0;
             break;
         case age == 5:
             average = 21;
-            foodType = total;
+            foodType = total2;
             adjustor = 0;
             break;
     }
 
     var comp = average - foodType;
-    if(foodType == total2) {
+    if(foodType == total) {
         switch(true) {
             case comp <= 0:
                 summary = "Your baby is in perfect health!"

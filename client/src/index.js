@@ -22,13 +22,15 @@ import ProctedRoute from "./component/ProtectedRoute";
 function App() {
   const [isSignedIn, setSigned] = useState(false);
   const navigate = useNavigate();
-  console.log(isSignedIn);
+  //console.log(isSignedIn);
   const handleClick2 = async (username, password) => {
     Axios.post("http://localhost:5000/login", {
       username,
       password,
     })
       .then((response) => {
+        //saveUser(username);
+        localStorage.setItem("username", username);
         console.log(response);
         toast.success(` Welcome ${response.data}`, {
           position: "top-left",
@@ -39,7 +41,8 @@ function App() {
           draggable: true,
           progress: undefined,
         });
-        setSigned(true);
+        //setSigned(true);
+        localStorage.setItem("isSignedIn", JSON.stringify(true))
         setTimeout(() => {
           navigate("/home");
         }, 3000);
@@ -97,7 +100,7 @@ function App() {
           <Route
             path="/home"
             element={
-              <ProctedRoute isSignedIn={isSignedIn}>
+              <ProctedRoute isSignedIn={JSON.parse(localStorage.getItem("isSignedIn"))}>
                 <Main />
               </ProctedRoute>
             }
@@ -105,7 +108,7 @@ function App() {
           <Route
             path="/addnewchild"
             element={
-              <ProctedRoute isSignedIn={isSignedIn}>
+              <ProctedRoute isSignedIn={JSON.parse(localStorage.getItem("isSignedIn"))}>
                 <AddChild />
               </ProctedRoute>
             }
@@ -113,7 +116,7 @@ function App() {
           <Route
             path="/bathroom"
             element={
-              <ProctedRoute isSignedIn={isSignedIn}>
+              <ProctedRoute isSignedIn={JSON.parse(localStorage.getItem("isSignedIn"))}>
                 <Bathroom />
               </ProctedRoute>
             }
@@ -121,7 +124,7 @@ function App() {
           <Route
             path="/eating"
             element={
-              <ProctedRoute isSignedIn={isSignedIn}>
+              <ProctedRoute isSignedIn={JSON.parse(localStorage.getItem("isSignedIn"))}>
                 <Feeding />
               </ProctedRoute>
             }
@@ -129,7 +132,7 @@ function App() {
           <Route
             path="/sleeping"
             element={
-              <ProctedRoute isSignedIn={isSignedIn}>
+              <ProctedRoute isSignedIn={JSON.parse(localStorage.getItem("isSignedIn"))}>
                 <SleepLog />
               </ProctedRoute>
             }
@@ -137,7 +140,7 @@ function App() {
           <Route
             path="/appointment"
             element={
-              <ProctedRoute isSignedIn={isSignedIn}>
+              <ProctedRoute isSignedIn={JSON.parse(localStorage.getItem("isSignedIn"))}>
                 <Appt />
               </ProctedRoute>
             }
@@ -145,7 +148,7 @@ function App() {
           <Route
             path="/important"
             element={
-              <ProctedRoute isSignedIn={isSignedIn}>
+              <ProctedRoute isSignedIn={JSON.parse(localStorage.getItem("isSignedIn"))}>
                 <ImportantEntries />
               </ProctedRoute>
             }

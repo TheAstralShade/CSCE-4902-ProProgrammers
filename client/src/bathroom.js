@@ -4,6 +4,7 @@ import DayComponent from './day';
 import Header from "./component/Header";
 import Axios from 'axios';
 let items=[['Monday',0,0,false],['Tuesday',0,0,false],['Wednesday',0,0,false],['Thursday',0,0,false],['Friday',0,0,false],['Saturday',0,0,false],['Sunday',0,0,false]];
+//let username = getUser();
 
 class Bathroom extends Component {
   constructor(){
@@ -38,6 +39,8 @@ class Bathroom extends Component {
   }
 
   handleClick2 = () => {
+    //let username = getUser()
+    //console.log(username)
     Axios.post("http://localhost:5000/bathroom", {
       mondaySolidSet: items[0][1],
       tuesdaySolidSet: items[1][1],
@@ -53,7 +56,8 @@ class Bathroom extends Component {
       fridayLiquidSet: items[4][2],
       saturdayLiquidSet: items[5][2],
       sundayLiquidSet: items[6][2],
-      totalSet: items[0][1] + items[1][1] + items[2][1] + items[3][1] + items[4][1] + items[5][1] + items[6][1] + items[0][2] + items[1][2] + items[2][2] + items[3][2] + items[4][2] + items[5][2] + items[6][2]
+      totalSet: items[0][1] + items[1][1] + items[2][1] + items[3][1] + items[4][1] + items[5][1] + items[6][1] + items[0][2] + items[1][2] + items[2][2] + items[3][2] + items[4][2] + items[5][2] + items[6][2],
+      user: localStorage.getItem("username")
     }).then((response) => {
         console.log(response);
     });
@@ -68,7 +72,8 @@ class Bathroom extends Component {
     }
     Axios.post("http://localhost:5000/importantEntries", {
       tmp,
-      comments: this.state.comment
+      comments: this.state.comment,
+      user: localStorage.getItem("username")
     })
     .then((response) => {
         console.log(response);
@@ -76,8 +81,10 @@ class Bathroom extends Component {
   }
 
   handleClick3 = () => {
+    //let username = getUser()
+    //console.log(username)
     Axios.post("http://localhost:5000/get-bathroom", {
-      babyName: 'Test'
+      user: localStorage.getItem("username")
     }).then((response) => {
       if(response.data.message) {
         console.log(response.data.message)

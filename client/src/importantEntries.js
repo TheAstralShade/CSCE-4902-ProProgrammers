@@ -15,7 +15,10 @@ export default class ImportantEntries extends React.Component {
         this.handleRefreshClick = this.handleRefreshClick.bind(this);
     }
     handleRefreshClick() {
-        Axios.post("http://localhost:5000/get-importantEntries" )
+        //let username = getUser();
+        Axios.post("http://localhost:5000/get-importantEntries",{
+            user: localStorage.getItem("username")
+        })
         .then((response) => {
             if(response.data.message) {
               console.log(response.data.message)

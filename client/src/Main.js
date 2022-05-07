@@ -18,49 +18,55 @@ import { ChildrenList } from "./childrenList.js";
 import Modal from "./component/Modal";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
-let total = 34;
+let total = 0;
 let total2 = 0;
 let test1 = 0;
 let test2 = 0;
+let name = "";
+let age = 0;
+let height = "";
+let weight = "";
 
-Axios.post("http://localhost:5000/get-total", {}).then((response) => {
-  if (response.data.message) {
-    console.log(response.data.message);
-  } else {
-    let length = response.data.length;
-    total = response.data[0].Total;
-    test1 = response.data[1].Total;
-    test2 = response.data[length - 1].Total;
-    //console.log(response.data[length-1].Total)
-  }
+Axios.post("http://localhost:5000/get-total", {
+      user: localStorage.getItem("username")
+    }).then((response) => {
+        //let length = response.data.length;
+        total = response.data[0].Total;
+        total2 = response.data[1].Total;
+        test1 = response.data[2].Total;
+        test2 = response.data[3].Total;
+        console.log(response.data[0].Total)
+    });
+
+Axios.post("http://localhost:5000/babyDetails", {
+    user: localStorage.getItem("username")
+}).then((response) => {
+    name = response.data[0].Name;
+    age = response.data[0].Age;
+    height = response.data[0].Height;
+    weight = response.data[0].Weight;
 });
-//console.log(test1)
+
+
 function Main() {
   const [eatingTotal, setEatingTotal] = useState(total);
   const [sleepingTotal, setSleepingTotal] = useState(test2);
   const [restroomTotal, setRestroomTotal] = useState(test1);
   const [addChild, setAddChild] = useState({
-    name: "",
-    height: "",
-    age: 0,
-    weight: "",
+    name: name,
+    height: height,
+    age: age,
+    weight: weight,
   });
   const [displayModal, setDisplayModal] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {
-    const datas = async () => {
-      const {
-        data: { name, age, height, weight },
-      } = await Axios.get("http://localhost:5000/babyDetails");
-      setAddChild({ name, age, height, weight });
-    };
-    datas();
-  });
   const handleClick = (e) => {};
 
   const handleUpdate = () => {
     //window.location.reload(true);
-    this.forceUpdate();
+    navigate("/home");
+    //let username = getUser();
+    //console.log(username);
   };
 
   const handleBath = () => {
@@ -76,6 +82,7 @@ function Main() {
   };
 
   const handleLogout = () => {
+    localStorage.setItem("isSignedIn", JSON.stringify(false))
     navigate("/");
   };
 
@@ -89,6 +96,7 @@ function Main() {
       age: e.target["age"].value,
       height: e.target["height"].value,
       weight: e.target["weight"].value,
+      user: localStorage.getItem("username")
     });
     setAddChild({
       name: e.target["name"].value,
@@ -105,7 +113,7 @@ function Main() {
     setDisplayModal(true);
   };
   const handleModalClosure = () => {
-    navigate(`/home`);
+    navigate("/home");
   };
   return (
     <body
