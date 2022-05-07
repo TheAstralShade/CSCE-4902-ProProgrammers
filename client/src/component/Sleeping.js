@@ -17,12 +17,14 @@ const Sleeping = ({ data, setData, options }) => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    console.log(data);
+    //console.log(data);
+    //let username = getUser();
 
     Axios.post("http://localhost:5000/sleeping", {
       daySet: data.day,
       sleepSet: data.hoursOfSleep,
       commentSet: data.comments,
+      user: localStorage.getItem("username")
     }).then((response) => {
       console.log(response);
     });
@@ -41,6 +43,7 @@ const Sleeping = ({ data, setData, options }) => {
       temp1: days,
       temp2: hours,
       temp3: comment,
+      user: localStorage.getItem("username")
     }).then((response) => {
       console.log(response);
     });
