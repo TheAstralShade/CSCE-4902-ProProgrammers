@@ -10,10 +10,10 @@ app.use(express.json());
 app.use(cors());
 
 let addChild1 = {
-    name: "baby1",
-    age: 2,
-    height: "2ft",
-    weight: "120kg",
+    name: "",
+    age: 0,
+    height: "",
+    weight: "",
   };
 
 const db = mysql.createPool({
@@ -47,20 +47,70 @@ app.post("/register", async (req, res) => {
         [username, hash],
         (err, result) => {
           if (err) {
-            return res.send({ message: "Welcome to thw baby tracker" });
+            return res.send({ message: "Welcome to the baby tracker" });
           }
         }
       );
     } else {
       return "No username and password was sent";
     }
+
+    db.query(
+      "INSERT INTO restroom (Total, username) VALUES ('0',?)",
+      [username],
+      (err, result) => {
+        if(err) {
+          console.log(err)
+        }
+      }
+    );
+
+    db.query(
+      "INSERT INTO eating_bottle (Total, username) VALUES ('0',?)",
+      [username],
+      (err, result) => {
+        if(err) {
+          console.log(err)
+        }
+      }
+    );
+
+    db.query(
+      "INSERT INTO eating_breast (Total, username) VALUES ('0',?)",
+      [username],
+      (err, result) => {
+        if(err) {
+          console.log(err)
+        }
+      }
+    );
+
+    db.query(
+      "INSERT INTO sleeping (Hours, username) VALUES ('0',?)",
+      [username],
+      (err, result) => {
+        if(err) {
+          console.log(err)
+        }
+      }
+    );
+
+    db.query(
+      "INSERT INTO babyinfo (Name, Age, Height, Weight, username) VALUES ('N/A','0','N/A','N/A',?)",
+      [username],
+      (err, result) => {
+        if(err) {
+          console.log(err)
+        }
+      }
+    );
   });
 
 app.post('/get-bathroom', (req, res)=> {
-    const baby = req.body.babyName;
+    const username = req.body.user;
 
-    db.query("SELECT * FROM restroom WHERE Baby = ?",
-    [baby],
+    db.query("SELECT * FROM restroom WHERE username = ?",
+    [username],
     (err, result) => {
         if (result.length > 0) {
             res.send(result)
@@ -88,10 +138,11 @@ app.post('/bathroom', (req, res)=> {
     const saturdayLValue = req.body.saturdayLiquidSet;
     const sundayLValue = req.body.sundayLiquidSet;
     const totalValue = req.body.totalSet;
+    const currentUser = req.body.user;
     //console.log(value)
 
-    db.query("UPDATE restroom SET Monday_Solid = ?, Tuesday_Solid = ?, Wednesday_Solid = ?, Thursday_Solid = ?, Friday_Solid = ?, Saturday_Solid = ?, Sunday_Solid = ?, Monday_Liquid = ?, Tuesday_Liquid = ?, Wednesday_Liquid = ?, Thursday_Liquid = ?, Friday_Liquid = ?, Saturday_Liquid = ?, Sunday_Liquid = ?, Total = ? WHERE Baby = 'Test'", 
-    [mondaySValue, tuesdaySValue, wednesdaySValue, thursdaySValue, fridaySValue, saturdaySValue, sundaySValue, mondayLValue, tuesdayLValue, wednesdayLValue, thursdayLValue, fridayLValue, saturdayLValue, sundayLValue, totalValue], 
+    db.query("UPDATE restroom SET Monday_Solid = ?, Tuesday_Solid = ?, Wednesday_Solid = ?, Thursday_Solid = ?, Friday_Solid = ?, Saturday_Solid = ?, Sunday_Solid = ?, Monday_Liquid = ?, Tuesday_Liquid = ?, Wednesday_Liquid = ?, Thursday_Liquid = ?, Friday_Liquid = ?, Saturday_Liquid = ?, Sunday_Liquid = ?, Total = ? WHERE username = ?", 
+    [mondaySValue, tuesdaySValue, wednesdaySValue, thursdaySValue, fridaySValue, saturdaySValue, sundaySValue, mondayLValue, tuesdayLValue, wednesdayLValue, thursdayLValue, fridayLValue, saturdayLValue, sundayLValue, totalValue, currentUser], 
     (err, result) => {
         console.log(err);
     });
@@ -99,11 +150,34 @@ app.post('/bathroom', (req, res)=> {
 
 app.post("/addBaby", (req, res) => {
     const { name, age, height, weight } = req.body;
-    addChild1 = { name, age, height, weight };
-    console.log(name, age, height, weight);
+    const username = req.body.user;
+
+    db.query("UPDATE babyinfo SET Name = ?, Age = ?, Height = ?, Weight = ? WHERE username = ?",
+    [name, age, height, weight,username],
+    (err, result) =>{
+      console.log(err);
+    });
+    //addChild1 = { name, age, height, weight };
+    //console.log(name, age, height, weight);
   });
-  app.get("/babyDetails", (req, res) => {
-    res.send(addChild1);
+  app.post("/babyDetails", (req, res) => {
+    const username = req.body.user
+    //console.log(username)
+    db.query("SELECT * FROM babyinfo WHERE username = ?",
+    [username],
+    (err, result) => {
+      if(result.length > 0) {
+        //addChild1.name = result[0];
+        //addChild1.age = result[1];
+        //addChild1.height = result[2];
+        //addChild1.weight = result[3];
+        //console.log("Test")
+        res.send(result);
+      }
+      else {
+        console.log(err);
+      }
+    });
   });
 
 app.post('/eating-bottle', (req, res)=> {
@@ -122,19 +196,20 @@ app.post('/eating-bottle', (req, res)=> {
     const amount6Value = req.body.amount6;
     const amount7Value = req.body.amount7;
     const totalValue = req.body.total;
+    const username = req.body.user;
 
-    db.query("UPDATE eating_bottle SET Date1 = ?, Amount1 = ?, Date2 = ?, Amount2 = ?, Date3 = ?, Amount3 = ?, Date4 = ?, Amount4 = ?, Date5 = ?, Amount5 = ?, Date6 = ?, Amount6 = ?, Date7 = ?, Amount7 = ?, Total = ? WHERE Baby = 'Test'",
-    [date1Value, amount1Value, date2Value, amount2Value, date3Value, amount3Value, date4Value, amount4Value, date5Value, amount5Value, date6Value, amount6Value, date7Value, amount7Value, totalValue],
+    db.query("UPDATE eating_bottle SET Date1 = ?, Amount1 = ?, Date2 = ?, Amount2 = ?, Date3 = ?, Amount3 = ?, Date4 = ?, Amount4 = ?, Date5 = ?, Amount5 = ?, Date6 = ?, Amount6 = ?, Date7 = ?, Amount7 = ?, Total = ? WHERE username = ?",
+    [date1Value, amount1Value, date2Value, amount2Value, date3Value, amount3Value, date4Value, amount4Value, date5Value, amount5Value, date6Value, amount6Value, date7Value, amount7Value, totalValue, username],
     (err, result)=> {
         console.log(err);
     });
 })
 
 app.post('/get-eating-bottle', (req, res)=> {
-    const baby = req.body.babyName;
+    const username = req.body.user;
 
-    db.query("SELECT * FROM eating_bottle WHERE Baby = ?",
-    [baby],
+    db.query("SELECT * FROM eating_bottle WHERE username = ?",
+    [username],
     (err, result) => {
         if (result.length > 0) {
             res.send(result)
@@ -160,19 +235,21 @@ app.post('/eating-breast', (req, res)=> {
     const time5Value = req.body.time5;
     const time6Value = req.body.time6;
     const time7Value = req.body.time7;
+    const totalValue = req.body.total;
+    const username = req.body.user;
 
-    db.query("UPDATE eating_breast SET Date1 = ?, Time1 = ?, Date2 = ?, Time2 = ?, Date3 = ?, Time3 = ?, Date4 = ?, Time4 = ?, Date5 = ?, Time5 = ?, Date6 = ?, Time6 = ?, Date7 = ?, Time7 = ? WHERE Baby = 'Test'",
-    [date1Value, time1Value, date2Value, time2Value, date3Value, time3Value, date4Value, time4Value, date5Value, time5Value, date6Value, time6Value, date7Value, time7Value],
+    db.query("UPDATE eating_breast SET Date1 = ?, Time1 = ?, Date2 = ?, Time2 = ?, Date3 = ?, Time3 = ?, Date4 = ?, Time4 = ?, Date5 = ?, Time5 = ?, Date6 = ?, Time6 = ?, Date7 = ?, Time7 = ?, Total = ? WHERE username = ?",
+    [date1Value, time1Value, date2Value, time2Value, date3Value, time3Value, date4Value, time4Value, date5Value, time5Value, date6Value, time6Value, date7Value, time7Value, totalValue, username],
     (err, result)=> {
         console.log(err);
     });
 })
 
 app.post('/get-eating-breast', (req, res)=> {
-    const baby = req.body.babyName;
+    const username = req.body.user;
 
-    db.query("SELECT * FROM eating_breast WHERE Baby = ?",
-    [baby],
+    db.query("SELECT * FROM eating_breast WHERE username = ?",
+    [username],
     (err, result) => {
         if (result.length > 0) {
             res.send(result)
@@ -187,23 +264,22 @@ app.post('/sleeping', (req, res)=> {
     const day = req.body.daySet;
     const hours = req.body.sleepSet;
     const comments = req.body.commentSet;
+    const username = req.body.user;
 
-    db.query("INSERT INTO sleeping (Baby, Day, Hours, Comment) VALUES ('Test', ?, ?, ?)",
-    [day, hours, comments],
+    db.query("UPDATE sleeping SET Day = ?, Hours = ?, Comment = ? WHERE username = ?",
+    [day, hours, comments, username],
     (err, result) => {
         console.log(err);
     });
 })
 
 app.post('/get-total', (req, res) => {
-    db.query("SELECT Total FROM eating_bottle UNION SELECT Total FROM restroom UNION SELECT Hours FROM sleeping",
+    const username = req.body.user;
+
+    db.query("SELECT Total FROM eating_bottle WHERE username = ? UNION ALL SELECT Total FROM eating_breast WHERE username = ? UNION ALL SELECT Total FROM restroom WHERE username = ? UNION ALL SELECT Hours FROM sleeping WHERE username = ?",
+    [username, username, username, username],
     (err, result) => {
-        if (result.length > 0) {
-            res.send(result)
-        }
-        else {
-            res.send({message: "No prior log entries!"})
-        }
+        res.send(result);
     });
 })
 
@@ -245,16 +321,17 @@ app.post("/login", async (req, res) => {
 
 app.post('/importantEntries',(req,res) => {
     let items=req.body.tmp;
-    let comments=req.body.comments
+    let comments=req.body.comments;
+    let username=req.body.user;
     
-    db.query("INSERT INTO markedentry (entry, quantity, day, comment) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)",
-    ["Restroom",items[0][1]+items[0][2], items[0][0], comments,
-    "Restroom",items[1][1]+items[1][2], items[1][0], comments,
-    "Restroom",items[2][1]+items[2][2], items[2][0], comments,
-    "Restroom",items[3][1]+items[3][2], items[3][0], comments,
-    "Restroom",items[4][1]+items[4][2], items[4][0], comments,
-    "Restroom",items[5][1]+items[5][2], items[5][0], comments,
-    "Restroom",items[6][1]+items[6][2], items[6][0], comments ],
+    db.query("INSERT INTO markedentry (entry, quantity, day, comment, username) VALUES (?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?)",
+    ["Restroom",items[0][1]+items[0][2], items[0][0], comments, username,
+    "Restroom",items[1][1]+items[1][2], items[1][0], comments, username,
+    "Restroom",items[2][1]+items[2][2], items[2][0], comments, username,
+    "Restroom",items[3][1]+items[3][2], items[3][0], comments, username,
+    "Restroom",items[4][1]+items[4][2], items[4][0], comments, username,
+    "Restroom",items[5][1]+items[5][2], items[5][0], comments, username,
+    "Restroom",items[6][1]+items[6][2], items[6][0], comments, username ],
     (err, result) => {
         console.log(err);
     });
@@ -280,15 +357,16 @@ app.post('/importantEntriesEating',(req,res) => {
     const important13 = req.body.temp13;
     const important14 = req.body.temp14;
     const important15 = req.body.temp15;
+    const username = req.body.user;
     
-    db.query("INSERT INTO markedentry (entry, quantity, day, comment) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)",
-    ["Eating",important8, important1, important15,
-    "Eating",important9, important2, important15,
-    "Eating",important10, important3, important15,
-    "Eating",important11, important4, important15,
-    "Eating",important12, important5, important15,
-    "Eating",important13, important6, important15,
-    "Eating",important14, important7, important15, ],
+    db.query("INSERT INTO markedentry (entry, quantity, day, comment, username) VALUES (?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?),(?,?,?,?,?)",
+    ["Eating",important8, important1, important15, username,
+    "Eating",important9, important2, important15, username,
+    "Eating",important10, important3, important15, username,
+    "Eating",important11, important4, important15, username,
+    "Eating",important12, important5, important15, username,
+    "Eating",important13, important6, important15, username,
+    "Eating",important14, important7, important15, username],
     (err, result) => {
         console.log(err);
     });
@@ -302,9 +380,10 @@ app.post('/importantEntriesSleeping',(req,res) => {
     const important1 = req.body.temp1;
     const important2 = req.body.temp2;
     const important3 = req.body.temp3;
+    const username = req.body.user;
     
-    db.query("INSERT INTO markedentry (entry, quantity, day, comment) VALUES (?,?,?,?)",
-    ["Sleeping",important2, important1, important3 ],
+    db.query("INSERT INTO markedentry (entry, quantity, day, comment, username) VALUES (?,?,?,?,?)",
+    ["Sleeping",important2, important1, important3, username],
     (err, result) => {
         console.log(err);
     });
@@ -315,8 +394,10 @@ app.post('/importantEntriesSleeping',(req,res) => {
 })
 
 app.post('/get-importantEntries', (req, res)=> {
+    const username = req.body.user
 
-    db.query("SELECT * FROM markedentry",
+    db.query("SELECT * FROM markedentry WHERE username = ?",
+    [username],
     (err, result) => {
         if (result.length > 0) {
             res.send(result)
