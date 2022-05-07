@@ -61,8 +61,21 @@ function App() {
       usernameSet: username,
       passwordSet: password,
     })
-      .then((response) => {
-        navigate("/");
+      .then((res) => {
+        console.log(res);
+        toast.success(` User successfully created`, {
+          position: "top-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
       })
       .catch((err) => {
         console.log(err.response);

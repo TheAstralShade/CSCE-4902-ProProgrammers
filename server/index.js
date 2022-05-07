@@ -32,33 +32,36 @@ db.connect((err) => {
 app.post("/register", async (req, res) => {
   const username = req.body.usernameSet;
   const password = req.body.passwordSet;
-
+  let exits = false;
   db.query(
     "SELECT * FROM credentials WHERE username = ?",
     [username],
     (err, result) => {
       if (result.length > 0) {
+        exits = true;
         return res.status(400).send("User with the username already exits");
       }
     }
   );
-  if (!username && !password) {
-    return res.status(400).json({ message: "Come on fill in the damn form" });
-  } else if (username && password) {
-    const salt = await bcrypt.genSalt(10); //Hashed password with bcryptjs
-    const hash = await bcrypt.hash(password, salt);
+  if (!exits) {
+    if (!username && !password) {
+      return res.status(400).json({ message: "Come on fill in the damn form" });
+    } else if (username && password) {
+      const salt = await bcrypt.genSalt(10); //Hashed password with bcryptjs
+      const hash = await bcrypt.hash(password, salt);
 
-    db.query(
-      "INSERT INTO credentials (username, password) VALUES (?,?)",
-      [username, hash],
-      (err, result) => {
-        if (err) {
-          return res.send({ message: "Welcome to thw baby tracker" });
+      db.query(
+        "INSERT INTO credentials (username, password) VALUES (?,?)",
+        [username, hash],
+        (err, result) => {
+          if (!err) {
+            return res.send({ message: "Welcome to thw baby tracker" });
+          }
         }
-      }
-    );
-  } else {
-    return "No username and password was sent";
+      );
+    } else {
+      return "No username and password was sent";
+    }
   }
 });
 
@@ -279,8 +282,8 @@ app.post("/login", async (req, res) => {
       "SELECT * FROM credentials WHERE username = ?",
       [username],
       async (err, results) => {
-        console.log(err);
-        if (err) {
+        console.log(results);
+        if (results.length === 0) {
           res.status(400).json({ message: "Username can't be found" });
         } else {
           const passwordChecker = await bcrypt.compare(
