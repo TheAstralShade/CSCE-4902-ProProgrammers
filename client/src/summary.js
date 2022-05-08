@@ -190,7 +190,7 @@ export function summaryFood(total, total2, age){
 
     //var comp = average - foodType;
     if(foodType === "bottle") {
-        var comp = average = total;
+        var comp = average - total;
         switch(true) {
             case comp <= 0:
                 summary = "Your baby is in perfect health!"
