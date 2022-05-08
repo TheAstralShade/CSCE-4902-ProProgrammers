@@ -6,7 +6,7 @@ export class ChildrenList extends Component{
     constructor(props){
         super(props);
         const children = [
-            "child1", "child2", "child3"
+            "Test", "child2", "child3"
         ];
         const list = children.map((child) => <option>{child}</option>);
         this.state = {

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import "./index.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Axios from "axios";
+
+import "./index.css";
 
 class LoginComponent extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class LoginComponent extends Component {
       password: "",
     };
     this.handleClick2 = this.props.handleClick;
+    this.handleClick3 = this.props.handleReg;
   }
 
   //Handles switch between
@@ -32,51 +33,6 @@ class LoginComponent extends Component {
         showRegister: true,
       });
     }
-  };
-
-  // handleClick2 = () => {
-  //   this.props.comp.isSignedIn = true;
-  //   Axios.post("http://localhost:5000/login", {
-  //     username: this.state.username,
-  //     password: this.state.password,
-  //   }).then((response) => {
-  //     console.log(response);
-  //     if (response.data.message) {
-  //       console.log(response.data.message);
-  //       toast.error(response.data.message, {
-  //         position: "top-left",
-  //         autoClose: 5000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //       });
-  //     } else {
-  //       console.log(response.data[0]);
-  //       toast.success(` Welcome ${response.data}`, {
-  //         position: "top-left",
-  //         autoClose: 2000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //       });
-  //     }
-  //     setTimeout(() => {
-  //       window.open("/home");
-  //     }, 3000);
-  //   });
-  // };
-
-  handleClick3 = () => {
-    Axios.post("http://localhost:5000/register", {
-      usernameSet: this.state.username,
-      passwordSet: this.state.password,
-    }).then((response) => {
-      console.log(response);
-    });
   };
 
   handleUsernameChange = (e) => {
@@ -125,7 +81,9 @@ class LoginComponent extends Component {
                 </div>
                 <button
                   className="btn btn-primary btn-block"
-                  onClick={this.handleClick2}
+                  onClick={() =>
+                    this.handleClick2(this.state.username, this.state.password)
+                  }
                 >
                   Login
                 </button>
@@ -152,7 +110,7 @@ class LoginComponent extends Component {
                     id="username"
                     name="username"
                     className="form-control"
-                    placeholder="Enter Email"
+                    placeholder="Enter Username"
                     value={this.state.username}
                     onChange={this.handleUsernameChange}
                   />
@@ -160,18 +118,20 @@ class LoginComponent extends Component {
                 <div className="form-group">
                   {/* <label className="form-label">Email</label> */}
                   <input
-                    type="username"
-                    id="username"
-                    name="username"
+                    type="password"
+                    id="password"
+                    name="password"
                     className="form-control"
                     placeholder="Enter Password"
-                    value={this.state.username}
-                    onChange={this.handleUsernameChange}
+                    value={this.state.password}
+                    onChange={this.handlePasswordChange}
                   />
                 </div>
                 <button
                   className="btn btn-primary btn-block"
-                  onClick={this.handleClick3}
+                  onClick={() =>
+                    this.handleClick3(this.state.username, this.state.password)
+                  }
                 >
                   Register
                 </button>

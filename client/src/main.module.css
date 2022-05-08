@@ -197,7 +197,7 @@ input.submit:hover{
   color: black;
 }
 
-select{
+.ChildList{
   height: 45px;
   width: 90px;
   font-size: 30px;
@@ -223,7 +223,24 @@ select{
   margin-left: 70px;
 }
 
+.summary{
+  height: 70px;
+  width: 180px;
+  font-size: 25px;
+  font-weight: 700;
+  border-radius: 10px;
+  background-color: #03dbfc;
+  color: white;
+  border-width: 0px;
+  margin-top: 0px;
+  margin-left: 70px;
+}
+
 .add:hover{
+  background-color: #1e90ff;
+}
+
+.summary:hover{
   background-color: #1e90ff;
 }
 

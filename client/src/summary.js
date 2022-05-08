@@ -1,9 +1,6 @@
-// We want the value being sent. To be zero. The higher the sent value, the worse the health summary.
-
-// 70 times a week for changes.
-export function gradeBath(test1, age){
+export function summaryBath(test1, age){
     var average;
-    var num;
+    var summary;
     var timesPerDay;
     //console.log(test1)
 
@@ -40,47 +37,46 @@ export function gradeBath(test1, age){
     // Switch to evaluate the average value and return the grade value
     switch(true) {
         case comp <= 0:
-            num = 425
+            summary = "Your baby is in perfect health!"
             break;
         case comp >= (0.7*timesPerDay) && comp < (1.4*timesPerDay):
-            num = 510;
+            summary = "Your baby is doing well."
             break;
         case comp >= (1.4*timesPerDay) && comp < (2.1*timesPerDay):
-            num = 595;
+            summary = "Your baby seems to be doing alright."
             break;
         case comp >= (2.1*timesPerDay) && comp < (2.8*timesPerDay):
-            num = 680;
+            summary = "Your baby is doing ok."
             break;
         case comp >= (2.8*timesPerDay) && comp < (3.5*timesPerDay):
-            num = 765;
+            summary = "Your baby could be doing better."
             break;
         case comp >= (3.5*timesPerDay) && comp < (4.2*timesPerDay):
-            num = 850;
+            summary = "Your baby isn't doing so well."
             break;
         case comp >= (4.2*timesPerDay) && comp < (4.8*timesPerDay):
-            num = 935;
+            summary = "Your baby's health is bad. Monitor this carefully."
             break;
         case comp >= (4.8*timesPerDay) && comp < (5.6*timesPerDay):
-            num = 1020;
+            summary = "Your baby's health is alarming. It may be wise to seek medical attention."
             break;
         case comp >= (5.6*timesPerDay) && comp < (6.3*timesPerDay):
-            num = 1105;
+            summary = "Critical health. Your baby might need medical attention."
             break;
         case comp >= (6.3*timesPerDay) && comp < (7.0*timesPerDay):
-            num = 1190;
+            summary = "Very critical health. Seek medcial attention!"
             break;
         case comp >= (7.0*timesPerDay):
-            num = 1275;
+            summary = "Seek medcial attention!"
             break;
     }
 
-    var i = num - (780 * .5);
-    return i;
+    return summary;
 }
 
-export function gradeSleep(test2, age){
+export function summarySleep(test2, age){
     var average;
-    var num;
+    var summary;
     var adjustor;
     //console.log(test2)
 
@@ -115,49 +111,49 @@ export function gradeSleep(test2, age){
 
     switch(true) {
         case comp <= 0:
-            num = 150
+            summary = "Your baby is in perfect health!"
             break;
         case comp >= (1.6 - adjustor) && comp < (3.2 - adjustor*2):
-            num = 214;
+            summary = "Your baby is doing well."
             break;
         case comp >= (3.2 - adjustor*2) && comp < (4.8 - adjustor*3):
-            num = 278;
+            summary = "Your baby seems to be doing alright."
             break;
         case comp >= (4.8 - adjustor*3) && comp < (6.4 - adjustor*4):
-            num = 342;
+            summary = "Your baby could be doing better."
             break;
         case comp >= (6.4 - adjustor*4) && comp < (8 - adjustor*5):
-            num = 406;
+            summary = "Your baby isn't doing so well."
             break;
         case comp >= (8 - adjustor*5) && comp < (9.6 - adjustor*6):
-            num = 470;
+            summary = "Your baby's health is bad. Monitor this carefully."
             break;
         case comp >= (9.6 - adjustor*6) && comp < (11.2 - adjustor*7):
-            num = 534;
+            summary = "Your baby's health is alarming. It may be wise to seek medical attention."
             break;
         case comp >= (11.2 - adjustor*7) && comp < (12.8 - adjustor*8):
-            num = 598;
+            summary = "Critical health. Your baby might need medical attention."
             break;
         case comp >= (12.8 - adjustor*8) && comp < (14.4 - adjustor*9):
-            num = 662;
+            summary = "Critical health. Your baby might need medical attention."
             break;
         case comp >= (14.4 - adjustor*9) && comp < (16 - adjustor*10):
-            num = 726;
+            summary = "Very critical health. Seek medcial attention!"
             break;
         case comp >= (16 - adjustor*10):
-            num = 790;
+            summary = "Seek medcial attention!"
             break;
     }
-    return num;
+    return summary;
 }
 
 // 70 - 105 ounces weekly for a newborn. We'll use that to start functionality
-export function gradeEating(total, total2, age){
+export function summaryFood(total, total2, age){
     var average;
-    var num;
+    var summary;
     var foodType;
     var adjustor;
-    console.log(age);
+    //console.log(total);
     //console.log(comp);
 
     switch(true) {
@@ -194,84 +190,81 @@ export function gradeEating(total, total2, age){
 
     //var comp = average - foodType;
     if(foodType === "bottle") {
-        console.log("Test1")
-        var comp = average - total;
+        var comp = average = total;
         switch(true) {
             case comp <= 0:
-                num = 350
+                summary = "Your baby is in perfect health!"
                 break;
             case comp >= 4.2 && comp < 8.4:
-                num = 420;
+                summary = "Your baby is doing well."
                 break;
             case comp >= 8.4 && comp < 12.6:
-                num = 490;
+                summary = "Your baby seems to be doing alright."
                 break;
             case comp >= 12.6 && comp < 16.8:
-                num = 560;
+                summary = "Your baby could be doing better."
                 break;
             case comp >= 16.8 && comp < 21:
-                num = 630;
+                summary = "Your baby isn't doing so well."
                 break;
             case comp >= 21 && comp < 25.2:
-                num = 700;
+                summary = "Your baby's health is bad. Monitor this carefully."
                 break;
             case comp >= 25.2 && comp < 29.4:
-                num = 770;
+                summary = "Your baby's health is alarming. It may be wise to seek medical attention."
                 break;
             case comp >= 29.4 && comp < 33.6:
-                num = 840;
+                summary = "Critical health. Your baby might need medical attention."
                 break;
             case comp >= 33.6 && comp < 37.8:
-                num = 910;
+                summary = "Critical health. Your baby might need medical attention."
                 break;
             case comp >= 37.8 && comp < 42:
-                num = 980;
+                summary = "Very critical health. Seek medcial attention!"
                 break;
             case comp >= 42:
-                num = 1050;
+                summary = "Seek medcial attention!"
                 break;
         }
     }
     else{
-        console.log("Test2")
         var comp = average - total2;
         switch(true) {
             case comp <= 0:
-                num = 350
+                summary = "Your baby is in perfect health!"
                 break;
             case comp >= (2.1 - adjustor) && comp < (4.2 - adjustor):
-                num = 420;
+                summary = "Your baby is doing well."
                 break;
             case comp >= (4.2 - adjustor) && comp < (6.3 - adjustor):
-                num = 490;
+                summary = "Your baby seems to be doing alright."
                 break;
             case comp >= (6.3 - adjustor) && comp < (8.4 - adjustor):
-                num = 560;
+                summary = "Your baby could be doing better."
                 break;
             case comp >= (8.4 - adjustor) && comp < (10.5 - adjustor):
-                num = 630;
+                summary = "Your baby isn't doing so well."
                 break;
             case comp >= (10.5 - adjustor) && comp < (12.6 - adjustor):
-                num = 700;
+                summary = "Your baby's health is bad. Monitor this carefully."
                 break;
             case comp >= (12.6 - adjustor) && comp < (14.7 - adjustor):
-                num = 770;
+                summary = "Your baby's health is alarming. It may be wise to seek medical attention."
                 break;
             case comp >= (14.7 - adjustor) && comp < (16.8 - adjustor):
-                num = 840;
+                summary = "Critical health. Your baby might need medical attention."
                 break;
             case comp >= (16.8 - adjustor) && comp < (18.9 - adjustor):
-                num = 910;
+                summary = "Critical health. Your baby might need medical attention."
                 break;
             case comp >= (18.9 - adjustor) && comp < (21 - adjustor):
-                num = 980;
+                summary = "Very critical health. Seek medcial attention!"
                 break;
             case comp >= (21 - adjustor):
-                num = 1050;
+                summary = "Seek medcial attention!"
                 break;
         }
     }
     
-    var i = num - (780 * .3);
-    return i;
+    return summary;
 }

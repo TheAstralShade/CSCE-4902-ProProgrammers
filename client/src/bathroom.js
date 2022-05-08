@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import './bathroom.css';
-import DayComponent from './day';
+import {Progress, Button, Checkbox} from 'semantic-ui-react';
 import Header from "./component/Header";
 import Axios from 'axios';
-let items=[['Monday',0,0],['Tuesday',0,0],['Wednesday',0,0],['Thursday',0,0],['Friday',0,0],['Saturday',0,0],['Sunday',0,0]];
+
+const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const types= ["Solid","Liquid"];
+let items=[['Monday',0,0,false],['Tuesday',0,0,false],['Wednesday',0,0,false],['Thursday',0,0,false],['Friday',0,0,false],['Saturday',0,0,false],['Sunday',0,0,false]];
 
 class Bathroom extends Component {
   constructor(){
@@ -11,20 +13,23 @@ class Bathroom extends Component {
     this.state = {
       dayValue : 'Monday',
       wasteValue:'Solid',
+      comment: '',
       updateValue:false
     }
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChange2=this.handleChange2.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleDayChange = this.handleDayChange.bind(this);
+    this.handleTypeChange=this.handleTypeChange.bind(this);
+    this.handleAddDataClick = this.handleAddDataClick.bind(this);
+    this.handleComment = this.handleComment.bind(this);
   }
-  handleClick = () => {
+  handleAddDataClick = (e) => {
     //console.log(this.state.wasteValue);
     //console.log(this.state.dayValue);
+    e.preventDefault();
 
     items.map((item,index)=>{
-      if (item[0] == this.state.dayValue)
+      if (item[0] === this.state.dayValue)
       {
-        if(this.state.wasteValue=='Solid'){item[1]++}
+        if(this.state.wasteValue==='Solid'){item[1]++}
         else{item[2]++}
         //console.log(item[1])
         //console.log(item[2])
@@ -35,7 +40,8 @@ class Bathroom extends Component {
   this.setState({ updateValue: false});
   }
 
-  handleClick2 = () => {
+  handleSaveClick = (e) => {
+    e.preventDefault();
     Axios.post("http://localhost:5000/bathroom", {
       mondaySolidSet: items[0][1],
       tuesdaySolidSet: items[1][1],
@@ -51,15 +57,34 @@ class Bathroom extends Component {
       fridayLiquidSet: items[4][2],
       saturdayLiquidSet: items[5][2],
       sundayLiquidSet: items[6][2],
-      totalSet: items[0][1] + items[1][1] + items[2][1] + items[3][1] + items[4][1] + items[5][1] + items[6][1] + items[0][2] + items[1][2] + items[2][2] + items[3][2] + items[4][2] + items[5][2] + items[6][2]
+      totalSet: items[0][1] + items[1][1] + items[2][1] + items[3][1] + items[4][1] + items[5][1] + items[6][1] + items[0][2] + items[1][2] + items[2][2] + items[3][2] + items[4][2] + items[5][2] + items[6][2],
+      user: localStorage.getItem("username")
     }).then((response) => {
         console.log(response);
-  });
+    });
+
+    let tmp=[[...items[0]],[...items[1]],[...items[2]],[...items[3]],[...items[4]],[...items[5]],[...items[6]]]
+    for(let i=0; i<7; i++) {
+      if(!tmp[i][3]) {
+        for(let j=0; j<4; j++) {
+          tmp[i][j]=null;
+        }
+      }
+    }
+    Axios.post("http://localhost:5000/importantEntries", {
+      tmp,
+      comments: this.state.comment,
+      user: localStorage.getItem("username")
+    })
+    .then((response) => {
+        console.log(response);
+    });
   }
 
-  handleClick3 = () => {
+  handleGetClick = (e) => {
+    e.preventDefault();
     Axios.post("http://localhost:5000/get-bathroom", {
-      babyName: 'Test'
+      user: localStorage.getItem("username")
     }).then((response) => {
       if(response.data.message) {
         console.log(response.data.message)
@@ -85,75 +110,95 @@ class Bathroom extends Component {
   this.setState({ updateValue: false});
   }
 
-  handleChange(e) {
+  handleDayChange(e) {
     console.log(e.target.value);
     this.setState({ dayValue: e.target.value });
   }
-  handleChange2(e) {
+  handleTypeChange(e) {
     console.log(e.target.value);
     this.setState({ wasteValue: e.target.value });
   }
+  //finds the given day through a for loop and switches the boolean
+  handleCheckClick(dayName) {
+    for(var i =0; i < 7; i++) {
+      if(items[i][0] === dayName) {
+        items[i][3] ? items[i][3]=false : items[i][3]=true;
+        console.log(items[i][3])
+        break;
+      }
+    }
+  }
+
+  handleComment(e) {
+    this.setState({ comment: e.target.value });
+  }
+
   render(){
     return ( 
-      <div>
+      <div className="container">
         <Header />
-        <div class="centered" > 
-      <div id="LoginBox" class = "LoginCenter">
-        <div class="TitleTest"> Data Entry </div>
-        <hr class="Line"></hr>
-        <div class = "spacer"> </div>
-        <div class = "spacer"> </div>
-        <div class="TypeTest"> Select Waste Type</div>
-        <hr class="Line2"></hr>
-        <div class="TypeTest"> 
-        <select name="dog-names" class="TypeTest" onChange={this.handleChange2}>
-          <option value="Solid">Solid</option>
-          <option value="Liquid">Liquid</option>
-        </select>
-        </div>
-        <div class = "spacer"> </div>
-        <div class = "spacer"> </div>
-        <div class = "spacer"> </div>
-        <div class="TypeTest"> Select Day </div>
-        <hr class="Line2"></hr>
-        <div class="TypeTest"> 
-        <select name="dog-names" class="TypeTest" onChange={this.handleChange}>
-          <option value="Monday" >Monday</option>
-          <option value="Tuesday">Tuesday</option>
-          <option value="Wednesday">Wednesday</option>
-          <option value="Thursday">Thursday</option>
-          <option value="Friday">Friday</option>
-          <option value="Saturday">Saturday</option>
-          <option value="Sunday">Sunday</option>
-        </select>
-        </div>
-        <div class = "spacer"> </div>
-        <div class = "spacer"> </div>
-        <div class="TypeTest"> 
-        <button class="ButtonFormat2" onClick={this.handleClick}>Add Data</button>
-        <button class="ButtonFormat2" onClick={this.handleClick2}>Save Data</button>
-        <button class="ButtonFormat2" onClick={this.handleClick3}>Get Data</button>
-        </div> 
-      </div>
-  
+        <div className="ui placeholder segment">
+          <div className="ui two column very relaxed stackable grid">
+            
+            <div className="column">
+              <h1 className="field">Restroom Input</h1>
+              <form className="ui form">
+                <div className="field">
+                  <label> Select a Type: </label>
+                  <select name="day" onChange={this.handleTypeChange}>
+                    {types.map((option, index) => {
+                      return (
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="field">
+                <label> Select a Day: </label>
+                  <select name="day" onChange={this.handleDayChange}>
+                    {days.map((option, index) => {
+                      return (
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
 
-      <div id="LoginBox" class = "LoginCenter">
-        <div class="TitleTest"> Recorded Data </div>
-        <hr class="Line"></hr>
-        <div class = "spacer"> </div>
-        <div class = "spacer"> </div>
-            {items.map((item,index)=>{
-              return <DayComponent dayValue={item[0]} solidTimes={item[1]} liquidTimes={item[2]}/>
-          })}
-          
-          
-          
-        
+                <div className="field">
+                  <label>Enter a Comment: </label>
+                  <div className="ui input">
+                    <input type="text" name="comments" value={this.state.comment} onChange={this.handleComment}/>
+                  </div>
+                </div>
+                <br></br>
+                <div className="row">
+                  <Button className="positive ui button" onClick={this.handleAddDataClick}>Add Data</Button>
+                  <Button className="positive ui button" onClick={this.handleSaveClick}>Save Data</Button>
+                  <Button className="positive ui button" onClick={this.handleGetClick}>Get Data</Button>
+                </div>
+              </form>
+            </div>
+
+
+            <div className="column" >
+              {items.map((item, index) => {
+                return (
+                  <div sytle>
+                      {item[0]}
+                      <Checkbox style={{paddingLeft: 50}} id="chkBox" label={<label>Mark  as important</label>} onClick={() => this.handleCheckClick(item[0])}></Checkbox>
+                    <Progress color='green' percent={5*item[1]}>Solid Entries: {item[1]}</Progress>
+                    <Progress color='green' percent={5*item[2]}>Liquid Entries: {item[2]}</Progress>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-      </div>
-    
-  
     )
   }
 }
