@@ -1,5 +1,7 @@
 import React from "react";
 import Axios from 'axios';
+import {Checkbox} from 'semantic-ui-react';
+let important = false
 const Sleeping = ({ data, setData, options }) => {
   //Keeping data
 
@@ -14,17 +16,45 @@ const Sleeping = ({ data, setData, options }) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const onClick = (e) => {
+  const handleClick = (e) => {
     e.preventDefault();
-    console.log(data);
+    //console.log(data);
+    //let username = getUser();
 
     Axios.post("http://localhost:5000/sleeping", {
       daySet: data.day,
       sleepSet: data.hoursOfSleep,
       commentSet: data.comments,
+      user: localStorage.getItem("username")
     }).then((response) => {
       console.log(response);
     });
+
+    let days = data.day
+    let hours = data.hoursOfSleep
+    let comment = data.comments
+
+    if (!important) {
+      days = null
+      hours = null
+      comment = null
+    }
+
+    Axios.post("http://localhost:5000/importantEntriesSleeping", {
+      temp1: days,
+      temp2: hours,
+      temp3: comment,
+      user: localStorage.getItem("username")
+    }).then((response) => {
+      console.log(response);
+    });
+
+  };
+
+  const handleCheckClick = (e) => {
+    e.preventDefault();
+    important ? important=false : important=true;
+    console.log(important);
   };
 
   return (
@@ -72,21 +102,6 @@ const Sleeping = ({ data, setData, options }) => {
             {parseFloat(data.hoursOfSleep)}
           </span>
         </div>
-        {/* </div> */}
-        {/* <div className="field">
-          <label> Time of Sleep</label>
-          <div className="ui input">
-            <input
-              type="time"
-              step="1"
-              value={`${parse(data.sleepTime.hr)}:${parse(
-                data.sleepTime.mm
-              )}:${parse(data.sleepTime.ss)}`}
-              name="sleepTime"
-              onChange={onChange}
-            />
-          </div>
-        </div> */}
         <div className="field">
           <label> Enter Comments</label>
           <div className="ui input">
@@ -98,7 +113,10 @@ const Sleeping = ({ data, setData, options }) => {
             />
           </div>
         </div>
-        <button className="positive ui button" onClick={onClick}>
+        <div className="field">
+          <Checkbox style={{"left":"0%"}} value="false" onClick={handleCheckClick} label={<label>Mark Important</label>}></Checkbox>
+        </div>
+        <button className="positive ui button" onClick={handleClick}>
           Submit
         </button>
       </form>
