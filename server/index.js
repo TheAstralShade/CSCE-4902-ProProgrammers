@@ -167,6 +167,7 @@ app.post('/appointments', (req, res)=> {
         console.log(err);
     });
 })
+
 app.post('/markedentry', (req, res)=> {
     const entry = req.body.entrySet;
     const quantity = req.body.quantitySet;
